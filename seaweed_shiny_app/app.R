@@ -2,37 +2,67 @@
 
 library(tidyverse)
 library(shiny)
+library(shinythemes)
 
-# Define UI for application
-ui <- fluidPage(
+# Create the user interface:
+ui <- fluidPage(theme = shinytheme("cerulean"),
 
-  navbarPage("TITLE!",
+  navbarPage("Seaweed Suitability in the Gulf of Mexico",
              tabPanel("Tab 1",
                       sidebarLayout(
-                          sidebarPanel("WIDGETS!",
-                                       selectInput(inputId = "pick species",
-                                       label = h3("seaweed type"),
+                          sidebarPanel("WIDGET 1",
+                                       selectInput(inputId = "pick_species",
+                                       label = h3("Seaweed Species"),
                                        choices = list(
-                                       "seaweed 1" = 1, "seaweed 2" = 2, "seaweed 3" = 3),
+                                       "Seaweed 1" = 1, "Seaweed 2" = 2, "Seaweed 3" = 3),
                                        selected = 1)
                                        ),
-                          mainPanel("OUTPUT"))
+                          mainPanel("OUTPUT 1"))
                       ),
-             tabPanel("Tab 2"),
-             tabPanel("Tab 3")
+             tabPanel("Tab 2",
+                      sidebarLayout(
+                          sidebarPanel("WIDGET 2",
+                                       sliderInput(inputId = "slider1",
+                                                   label = h3("Temperature (C)"),
+                                                   min = 0,
+                                                   max = 100,
+                                                   value = 50),
+                                       "WIDGET 3",
+                                       sliderInput(inputId = "slider2",
+                                                   label = h3("Salinity (ppt)"),
+                                                   min = 30,
+                                                   max = 40,
+                                                   value = 35)
+                          ),
+                          mainPanel("OUTPUT 2",
+                                    "OUTPUT 3"))
+                      ),
+             tabPanel("Tab 3",
+                      sidebarLayout(
+                          sidebarPanel("WIDGET 4",
+                                       checkboxGroupInput(inputId = "checkGroup",
+                                                   label = h3("Marine Activities"),
+                                                   choices = list(
+                                                       "Marine Protected Areas" = 1, "Oil and Gas Wells/Platforms" = 2, "Danger and Restricted Zones" = 3),
+                                                   selected = 1)
+                          ),
+                          mainPanel("OUTPUT 4"))
+             )
 
   )
 
 )
 
+# Create the server:
 server <- function(input, output) {
 
 
+    output$value <- renderPrint({ input$slider1 })
 
 
 }
 
-# Run the application
+# Combine ui and server to run the application
 shinyApp(ui = ui, server = server)
 
 
