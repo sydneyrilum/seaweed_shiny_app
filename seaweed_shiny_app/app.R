@@ -17,7 +17,14 @@ ui <- fluidPage(theme = shinytheme("cerulean"),
                                        "Seaweed 1" = 1, "Seaweed 2" = 2, "Seaweed 3" = 3),
                                        selected = 1)
                                        ),
-                          mainPanel("OUTPUT 1"))
+                          mainPanel(
+                                    img(src = 'eucheuma.png', align = "right",
+                                        height = "50%", width = "50%"),
+                                    img(src = 'gracilaria.png', align = "right",
+                                        height = "50%", width = "50%"),
+                                    img(src = 'sargassum.png', align = "right",
+                                        height = "50%", width = "50%")
+                                    ))
                       ),
              tabPanel("Tab 2",
                       sidebarLayout(
