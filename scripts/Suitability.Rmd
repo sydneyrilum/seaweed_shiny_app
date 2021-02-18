@@ -77,7 +77,7 @@ Depth
 ```{r}
 
 # read in raster
-depth_mask <- raster(paste0(path,"/depth_mask.tif"))
+depth_mask <- raster(paste0(path,"/depth_mask_bo.tif"))
 
 # Reclassification matrix 
 rcl_matrix_depth <- c(-Inf, max_depth, 0,
@@ -209,7 +209,7 @@ suitable_zoom <- crop(suitable_areas, extent(-100, -80, 22, 35))
 
 # plot
 plot(suitable_zoom)
-map('world',fill=T,add=T,col='gray')
+#map('world',fill=T,add=T,col='gray')
 
 
 ```
