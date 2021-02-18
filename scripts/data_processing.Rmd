@@ -1,0 +1,655 @@
+---
+title: "Data processing"
+author: "AnnaClaire Marley"
+date: "4/16/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message = FALSE}
+# load packages
+library(tidyverse)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(ggplot2)
+library(maps)
+library(rgdal)
+library(raster)
+library(sdmpredictors)
+```
+
+This Rmarkdown:
+
+- imports layers of interest
+- reprojects, crops, and masks them to the area of interest 
+- If shapefile, reclassifies to raster with 1 for fill and 0 for not then exports as raster
+- exports them
+
+```{r}
+# set up path for saving files 
+path <- "../data/Active_Data_Layers/"
+
+```
+
+
+Area of Interest bounding box
+```{r aoi}
+# aoi shapefile
+aoi <- read_sf("../data/gulf_of_mexico_aoi/",
+                layer = "gulf_of_mexico_aoi-polygon")
+
+# assign projections 
+crs_aoi <- st_crs(aoi)
+
+#projection
+proj <- "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
+```
+
+
+Gulf area
+```{r}
+# load gulf area
+gulf_area <- read_sf(dsn = "../data/gulf_mexico_area/",
+                     layer = "iho")
+
+# reproject
+gulf_area_reproject <- st_transform(gulf_area, proj)
+
+plot(gulf_area_reproject$geometry)
+map('world',fill=T,add=T,col='gray')
+
+```
+
+
+EEZ 
+```{r}
+# read in world eez
+eez <- read_sf(dsn = "../data/World_EEZ_v11_20191118/",
+               layer = "eez_v11")
+
+# filter to us eez and reproject
+us_eez <- eez %>% 
+  filter(TERRITORY1 == "United States") %>% 
+  st_transform(proj)
+
+# crop to the gulf
+eez_gulf <- st_crop(us_eez, aoi) 
+plot(eez_gulf$geometry)
+
+# create new polygon of the eez that only counts as gulf area 
+eez_gulf <- st_intersection(gulf_area_reproject, eez_gulf)
+plot(eez_gulf$geometry)
+```
+
+# Suitability Layers
+
+### BIO-ORACLE layers http://www.bio-oracle.org/code.php
+*if from bio oracle don't need to resample rasters all have same resolution of 5 arcmin*
+
+```{r}
+# Explore datasets in the 'sdmpredictors' package 
+# list_datasets() 
+
+# Explore layers in a dataset 
+list <- list_layers() %>% 
+  filter(dataset_code == "Bio-ORACLE")
+
+list_layers(datasets)
+
+# Description of additional functions in the 'sdmpredictors' package: https://onlinelibrary.wiley.com/doi/pdf/10.1111/geb.12693
+```
+
+```{r}
+#### Function to process BIO-ORACLE data ####
+
+#' process_bo_data
+#'
+#' @param BO_layer layer loaded from bio oracle
+#' @param proj projection to reproject raster layer in
+#' @param area aoi
+#' @param mask polygon to mask the raster file to
+#'
+#' @return mask of raster layer -- preset to be mask of gulf eez
+#'
+#' @examples
+
+process_bo_data = function(BO_layer, project = proj, area = aoi, mask = eez_gulf) {
+  
+  #reproject
+  layer_proj <- projectRaster(BO_layer, crs = project)
+
+  # crop to aoi
+  layer_crop <- crop(layer_proj, area)
+  
+  # mask
+  layer_mask <- mask(layer_crop, mask)
+  
+  return(layer_mask)
+}
+
+```
+
+SST
+```{r}
+
+# download max & min SST from BIO-ORACLE
+max_sst <- load_layers("BO_sstmax") 
+min_sst <- load_layers("BO_sstmin") 
+
+# reproject, crop, mask function
+max_sst_mask <- process_bo_data(max_sst)
+min_sst_mask <- process_bo_data(min_sst)
+
+# plot
+plot(max_sst_mask)
+plot(min_sst_mask)
+
+# Write rasters for Suitability Analysis
+writeRaster(max_sst_mask, paste0(path, "max_sst_mask.tif"), overwrite = T)
+writeRaster(min_sst_mask, paste0(path, "min_sst_mask.tif"), overwrite = T)
+```
+
+
+Average Nitrates (mol.m-3)
+```{r}
+# load layer
+mean_nitrate_ss <- load_layers("BO2_nitratemean_ss")
+
+# reproject, crop, mask function
+mean_nitrate_mask <- process_bo_data(mean_nitrate_ss)
+
+# plot
+plot(mean_nitrate_mask)
+
+# write to file
+writeRaster(mean_nitrate_mask, paste0(path, "mean_nitrate_mask.tif"), overwrite = T)
+```
+
+Phosphates (mean_nitrate_mask)
+```{r}
+# load layer
+mean_phosphate_ss <- load_layers("BO2_phosphatemean_ss")
+
+# reproject, crop, mask function
+mean_phosphate_mask <- process_bo_data(mean_phosphate_ss)
+
+# plot
+plot(mean_phosphate_mask)
+
+# write to file
+writeRaster(mean_phosphate_mask, paste0(path, "mean_phosphate_mask.tif"), overwrite = T)
+```
+
+
+N:P ratio
+
+```{r}
+# calculate N:P ratio and scale down by 1000
+n_p_ratio <- (mean_nitrate_mask/mean_phosphate_mask)/1000
+plot(n_p_ratio)
+
+# write to file
+writeRaster(n_p_ratio, paste0(path, "n_p_ratio.tif"), overwrite = T)
+```
+
+Salinity (PSS)
+
+```{r}
+# max and min salinity at sea surface
+salinity_min <- load_layers("BO2_salinitymin_ss")
+salinity_max <- load_layers("BO2_salinitymax_ss")
+
+# reproject, crop, mas
+sal_min_mask <- process_bo_data(salinity_min)
+sal_max_mask <- process_bo_data(salinity_max)
+
+# plot
+plot(sal_min_mask)
+plot(sal_max_mask)
+
+# write to file
+writeRaster(sal_min_mask, paste0(path, "sal_min_mask.tif"), overwrite = T)
+writeRaster(sal_max_mask, paste0(path, "sal_max_mask.tif"), overwrite = T)
+```
+
+Sea surface Current Velocity 
+
+```{r}
+# get min current velocity data
+curvel_min_ss <- load_layers("BO2_curvelmin_ss")
+
+# reproject, crop, mask function
+curvel_min_mask <- process_bo_data(curvel_min_ss)
+
+# plot
+plot(curvel_min_mask)
+
+# write to file
+writeRaster(curvel_min_mask, paste0(path, "curvel_min_mask.tif"), overwrite = T)
+```
+
+```{r}
+# get max current velocity data
+curvel_max_ss <- load_layers("BO2_curvelmax_ss")
+
+# reproject, crop, mask function
+curvel_max_mask <- process_bo_data(curvel_max_ss)
+
+# plot
+plot(curvel_max_mask)
+
+# write to file
+writeRaster(curvel_max_mask, paste0(path, "curvel_max_mask.tif"), overwrite = T)
+
+
+```
+
+### HYCOM data
+
+#### Sea surface temperature
+
+```{r}
+# max sst
+max_sst_hycom <- list.files("../data/HYCOM/Year_2012/", pattern = "av_sst_max*")
+max_sst_hy_stack <- raster::stack(paste0("../data/HYCOM/Year_2012/", max_sst_hycom))
+
+# min sst
+min_sst_hycom <- list.files("../data/HYCOM/Year_2012/", pattern = "av_sst_min*")
+min_sst_hy_stack <- raster::stack(paste0("../data/HYCOM/Year_2012/", min_sst_hycom))
+
+```
+
+##### Annual SST
+```{r}
+# annual average maximum sst
+max_sst_hy_an <- mean(max_sst_hy_stack)
+
+# process and plot
+max_sst_hy_an_mask <- process_bo_data(max_sst_hy_an)
+plot(max_sst_hy_an_mask)
+
+# annual average minimum sst
+min_sst_hy_an <- mean(min_sst_hy_stack)
+
+# process and plot
+min_sst_hy_an_mask <- process_bo_data(min_sst_hy_an)
+plot(min_sst_hy_an_mask)
+
+# write to file
+writeRaster(max_sst_hy_an_mask, paste0(path, "max_sst_hy_an_mask.tif"), overwrite = T)
+writeRaster(min_sst_hy_an_mask, paste0(path, "min_sst_hy_an_mask.tif"), overwrite = T)
+```
+
+Create an Empty Raster Using min SST as a Template
+```{r}
+# Reclassification matrix for empty raster
+rcl_matrix <- c(-Inf, Inf, 0)
+
+# Reclassify the depth layer to make it an empty raster
+empty_raster <- reclassify(min_sst_hy_an_mask, rcl= rcl_matrix)
+
+```
+
+#### Salinity
+```{r}
+# max salinity
+max_sal_hycom <- list.files("../data/HYCOM/Year_2012/", pattern = "av_sal_max*")
+max_sal_hy_stack <- raster::stack(paste0("../data/HYCOM/Year_2012/", max_sal_hycom))
+
+# min salinity
+min_sal_hycom <- list.files("../data/HYCOM/Year_2012/", pattern = "av_sal_min*")
+min_sal_hy_stack <- raster::stack(paste0("../data/HYCOM/Year_2012/", min_sal_hycom))
+```
+
+##### Annual salinity
+
+```{r}
+# annual average maximum salinity
+max_sal_hy_an <- mean(max_sal_hy_stack)
+
+# process and plot
+max_sal_hy_an_mask <- process_bo_data(max_sal_hy_an)
+plot(max_sal_hy_an_mask)
+
+# annual average minimum salinity
+min_sal_hy_an <- mean(min_sal_hy_stack)
+
+# process and plot
+min_sal_hy_an_mask <- process_bo_data(min_sal_hy_an)
+plot(min_sal_hy_an_mask)
+
+# write to file
+writeRaster(max_sal_hy_an_mask, paste0(path, "max_sal_hy_an_mask.tif"), overwrite = T)
+writeRaster(min_sal_hy_an_mask, paste0(path, "min_sal_hy_an_mask.tif"), overwrite = T)
+```
+
+### GEBCO 
+
+Depth Data
+```{r}
+# Get depth data of the gulf 
+depth <- raster("../data/GEBCO_2019_21_Apr_2020_800d0264f91d/gebco_2019_n31.291637420654297_s17.777252197265625_w-100.55442810058594_e-78.51070404052734.tif")
+
+# reproject
+depth_proj <- projectRaster(depth, crs = proj)
+
+# crop depth to EEZ
+depth_crop <- crop(depth, aoi)
+
+```
+
+Resample
+
+```{r}
+# Resample to Bio-Oracle Cell Size (ATM Bio-Oracle Cell Size is the Standard)
+  # make resample crop
+  max_sst_crop <- crop(projectRaster(max_sst, crs = proj), aoi)
+  
+  # resample
+  depth_resample_bo <- resample(depth_crop, max_sst_crop, method='ngb', progress='text')
+
+# mask depth to EEZ
+depth_mask_bo <- mask(depth_resample, eez_gulf)
+
+plot(depth_mask_bo)
+
+# Write a Raster for Suitability Analysis
+writeRaster(depth_mask_bo, paste0(path, "depth_mask_bo.tif"), overwrite = T)
+
+### Resample to HYCOMM cell size
+  # make resample crop
+  max_sst_hy <- crop(projectRaster(min_sst_hy_an, crs = proj), aoi)
+  
+  # resample
+  depth_resample_hy <- resample(depth_crop, max_sst_hy, method='ngb', progress='text')
+
+# mask depth to EEZ
+depth_mask_hy <- mask(depth_resample_hy, eez_gulf)
+
+plot(depth_mask_hy)
+
+# Write a Raster for Suitability Analysis
+writeRaster(depth_mask_hy, paste0(path, "depth_mask_hy.tif"), overwrite = T)
+
+
+```
+
+
+
+# Exclusion Layers
+
+## Natural Resources
+
+Marine Protected Areas
+
+```{r}
+# read in MPAs
+mpa <- read_sf("../data/MPAI2017", layer = "MPAI_2017")
+
+# reproject
+mpa_project <- mpa %>% 
+  dplyr::select(Site_ID, Site_Name, Gov_Level, State) %>% 
+  st_transform(proj) %>% 
+  st_buffer(0)
+
+# Crop
+mpa_crop <- st_crop(mpa_project, aoi)
+
+# Rasterizing Steps for MPA Layer
+  # Create a Binary MPA Raster
+  mpas_binary <- rasterize(mpa_crop, empty_raster, field = 0, background = 1) %>% 
+    mask(eez_gulf)
+  
+  # Plot Reclassified MPA Layer
+  plot(mpas_binary)
+  #freq(mpas_binary)
+
+# Write a Raster for Suitability Analysis
+writeRaster(mpas_binary, paste0(path, "mpas_binary_hy.tif"), overwrite = T)
+    
+```
+
+## Travel lanes
+
+Shipping lanes
+```{r}
+# read in shipping lanes
+shipping <- read_sf("../data/shippinglanes/", layer = "shippinglanes")
+
+# reproject 
+ship_project <- shipping %>% 
+  st_transform(proj) 
+
+# crop
+ship_crop <- ship_project %>% 
+  st_crop(eez_gulf)
+
+# filter to only include shipping lanes and fairways
+ship_filter <- ship_crop %>% 
+  filter(THEMELAYER == "Shipping Fairways Lanes and Zones" | 
+           THEMELAYER == "Traffic Separation Schemes" |
+           THEMELAYER == "Traffic Separation Schemes/Traffic Lanes")
+
+# rasterize & mask
+ship_binary <- rasterize(ship_filter, empty_raster, field = 0, background = 1) %>% 
+    mask(eez_gulf)
+
+plot(ship_binary)
+
+# Write a Raster for Suitability Analysis
+writeRaster(ship_binary, paste0(path, "ship_binary_hy.tif"), overwrite = T)
+
+```
+
+## Infrastructure
+
+Oil and gas platforms
+
+```{r}
+# read in oil and gas platforms 
+og_platform <- read_sf(dsn = "../data/OilandGasPlatforms/OilandGasPlatforms.gdb/",
+                       layer = "OilandGasPlatforms")
+
+# add 500 meter buffer around points
+og_buffer <- st_buffer(og_platform, 500)
+
+# reproject and crop
+og_crop <- og_buffer %>% 
+  st_transform(proj) %>% 
+  st_crop(aoi)
+
+# rasterize & mask
+og_binary <- rasterize(og_crop, empty_raster,
+                                   field = 0, background = 1) %>% 
+  mask(eez_gulf)
+
+# plot it
+plot(og_binary)
+map('world',fill=T,add=T,col='gray')
+
+# Write a Raster for Suitability Analysis
+writeRaster(og_binary, paste0(path, "og_binary_hy.tif"), overwrite = T)
+```
+
+Submarine cable areas
+
+```{r}
+# read in submarine cables
+sub_cable_area <- read_sf(dsn = "../data/SubmarineCableAreas/SubmarineCableAreas.gdb/",
+                      layer = "SubmarineCableAreas" )
+
+# reproject 
+sub_cable_area_project <- sub_cable_area %>% 
+  st_transform(proj) 
+
+# crop
+sub_cable_area_crop <- st_crop(sub_cable_area_project, aoi)
+
+plot(sub_cable_area_crop)
+
+# rasterize & mask
+sub_cable_area_binary <- rasterize(sub_cable_area_crop, empty_raster,
+                                   field = 0, background = 1) %>% 
+  mask(eez_gulf)
+
+plot(sub_cable_area_binary)
+map('world',fill=T,add=T,col='gray')
+
+# Write a Raster for Suitability Analysis
+writeRaster(sub_cable_area_binary, paste0(path, "sub_cable_area_binary_hy.tif"), overwrite = T)
+
+```
+
+Pipeline areas
+```{r}
+# read in pipeline areas
+pipeline_areas <- read_sf(dsn = "../data/PipelineArea/PipelineArea.gdb/",
+                          layer = "PipelineArea")
+
+# reproject
+pipe_project <- st_transform(pipeline_areas, proj)
+
+# crop
+pipe_crop <- st_crop(pipe_project, aoi)
+
+plot(pipe_crop$Shape)
+
+# rasterize and mask
+pipe_binary <- rasterize(pipe_crop, empty_raster,
+                                   field = 0, background = 1) %>% 
+  mask(eez_gulf)
+
+plot(pipe_binary)
+
+# Write a Raster for Suitability Analysis
+writeRaster(pipe_binary, paste0(path, "pipe_binary_hy.tif"), overwrite = T)
+
+```
+
+## Military
+
+Danger and restricted zones
+```{r}
+
+# read in sf
+
+danger_zones <- st_read(dsn = "../data/DangerZonesAndRestrictedAreas/DangerZonesandRestrictedAreas.gdb/", 
+                        layer = "DangerZonesandRestrictedAreas")
+
+# reproject
+danger_reproject <- st_transform(danger_zones, proj) 
+
+# recast to multipolygon for cropping
+danger_mp <- st_cast(danger_reproject, "MULTIPOLYGON")
+
+# crop
+danger_crop <- st_crop(danger_mp, aoi)
+
+# rasterize and mask
+danger_binary <- rasterize(danger_crop, empty_raster,
+                                   field = 0, background = 1) %>% 
+  mask(eez_gulf)
+
+plot(danger_binary)
+
+# Write a Raster for Suitability Analysis
+writeRaster(danger_binary, paste0(path, "danger_binary_hy.tif"), overwrite = T)
+
+```
+
+All suitable areas
+```{r}
+
+suitable <- overlay(ship_binary, mpas_binary, sub_cable_area_binary, pipe_binary,
+                    danger_binary, og_binary, 
+                    fun = function(a, b, c, d, e, f){a*b*c*d*e*f})
+plot(suitable)
+map('world',fill=T,add=T,col='gray')
+```
+
+## Need to figure out buffering
+
+Submarine cables
+
+```{r}
+# read in submarine cables
+sub_cables <- read_sf(dsn = "../data/SubmarineCables/NOAAChartedSubmarineCables.gdb/",
+                      layer = "NOAAChartedSubmarineCables")
+
+# reproject 
+sub_cables_project <- sub_cables %>% 
+  st_transform(proj) 
+
+# recast
+sub_cables_cast <- st_cast(sub_cables_project, "MULTILINESTRING")
+
+# crop
+sub_cables_crop <- st_crop(sub_cables_cast, aoi)
+
+plot(sub_cables_crop$Shape)
+
+# rasterize & mask
+sub_cables_binary <- rasterize(sub_cables_crop, empty_raster,
+                                   field = 0, background = 1) %>% 
+  mask(eez_gulf)
+
+
+plot(sub_cables_binary)
+
+```
+
+Oil and gas wells
+
+```{r}
+# read in oil and gas wells
+#og_wells <- read_sf(dsn = "../data/OilandGasWells/OilandGasWells.gdb/",
+ #                   layer = "OilandGasWells")
+
+# reproject 
+#og_wells_project <- og_wells %>% 
+ # st_transform(crs_aoi)
+
+```
+
+Artificial Reefs
+```{r}
+# load artificial reefs from ocean reports
+artificial_reefs <- sf::st_read(dsn = "../data/ArtificialReefs/ArtificialReefs.gdb", 
+                                layer = "ArtificialReefs") %>% 
+  st_transform(proj)
+
+plot(artificial_reefs)
+
+# Rasterize artificial reefs
+#reefs_artificial_binary <- rasterize(artificial_reefs, empty_raster, field = 0, background = 1) %>%
+ # mask(eez_BRA)
+
+
+```
+
+
+Make initial map with vector data to see layers
+```{r}
+# map of gulf
+gulf_base <- us %>% 
+  ggplot() +
+  geom_sf() +
+  geom_sf(data = states) +
+  geom_sf(data = eez_gulf) +
+  geom_sf(data = artificial_reefs) +
+  coord_sf(xlim = c(-102.15, -74.12), ylim = c(20.65, 33.97), expand = FALSE) +
+  scale_fill_viridis_d(option = "plasma") +
+  theme(legend.position = "none", 
+        axis.title.x = element_blank(), 
+        axis.title.y = element_blank(), 
+        panel.background = element_rect(fill = "azure"), 
+        panel.border = element_rect(fill = NA)) 
+
+gulf_base
+```
+
+
