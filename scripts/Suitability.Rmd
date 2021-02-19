@@ -222,8 +222,8 @@ plot(suitable_zoom)
 #         color = "light blue")
 
 # sargassum
-save_map(png_name = "sargassum_suitable.png", title = "Sargassum Suitability", 
-         color = "purple")
+#save_map(png_name = "sargassum_suitable.png", title = "Sargassum Suitability", 
+#         color = "purple")
 # Euchema
 #save_map(png_name = "euchema_suitable.png", title = "Euchema Suitability", 
 #         color = "green")
@@ -237,22 +237,22 @@ save_map(png_name = "sargassum_suitable.png", title = "Sargassum Suitability",
 
 ```{r}
 # Marine protected areas
-mpa <- raster(paste0(path,"/mpas_binary.tif"))
+mpa <- raster(paste0(path,"/mpas_binary_hy.tif"))
 
 # Shipping lanes
-shipping_lanes <- raster(paste0(path,"/ship_binary.tif"))
+shipping_lanes <- raster(paste0(path,"/ship_binary_hy.tif"))
 
 # Submarine Cable Areas
-sub_cable_areas <- raster(paste0(path,"/sub_cable_area_binary.tif"))
+sub_cable_areas <- raster(paste0(path,"/sub_cable_area_binary_hy.tif"))
 
 # Pipeline Areas
-pipeline_areas <- raster(paste0(path,"/pipe_binary.tif"))
+pipeline_areas <- raster(paste0(path,"/pipe_binary_hy.tif"))
 
 # Military danger zones
-military_danger <- raster(paste0(path,"/danger_binary.tif"))
+military_danger <- raster(paste0(path,"/danger_binary_hy.tif"))
 
 # Oil and Gas platforms
-oil_gas_platforms <- raster(paste0(path,"/og_binary.tif"))
+oil_gas_platforms <- raster(paste0(path,"/og_binary_hy.tif"))
 
 ```
 
@@ -268,13 +268,13 @@ exclusion <- overlay( mpa,
                       fun = function(a, b, c, d, e, f){a*b*c*d*e*f})
 
 plot(exclusion)
-map('world',fill=T,add=T,col='gray')
+# map('world',fill=T,add=T,col='gray')
 
 # zoom in to see
 exclusion_zoom <- crop(exclusion, extent(-100, -80, 22, 35))
 
 plot(exclusion_zoom)
-map('world',fill=T,add=T,col='gray')
+# map('world',fill=T,add=T,col='gray')
 
 ```
 
@@ -300,7 +300,7 @@ map('world',fill=T,add=T,col='gray')
 suitability_zoom <- crop(suitable_areas, extent(-100, -80, 22, 35))
 
 plot(suitability_zoom)
-map('world',fill=T,add=T,col='gray')
+# map('world',fill=T,add=T,col='gray')
 
 ```
 
