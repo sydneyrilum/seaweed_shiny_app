@@ -15,15 +15,10 @@ ui <- fluidPage(theme = shinytheme("cerulean"),
                                        label = h3("Seaweed Species"),
                                        choices = list(
                                        "Seaweed 1" = 1, "Seaweed 2" = 2, "Seaweed 3" = 3),
-                                       selected = 1)
+                                       selected = 1),
                                        ),
                           mainPanel(
-                                    img(src = 'eucheuma.png', align = "right",
-                                        height = "50%", width = "50%"),
-                                    img(src = 'gracilaria.png', align = "right",
-                                        height = "50%", width = "50%"),
-                                    img(src = 'sargassum.png', align = "right",
-                                        height = "50%", width = "50%")
+                                    uiOutput("img")
                                     ))
                       ),
              tabPanel("Tab 2",
@@ -64,7 +59,17 @@ ui <- fluidPage(theme = shinytheme("cerulean"),
 server <- function(input, output) {
 
 
-    output$value <- renderPrint({ input$slider1 })
+    output$img <- renderUI({
+      if(input$pick_species == 1){
+        img(height = 240, width = 300, src = 'eucheuma.png')
+      }
+      else if(input$pick_species == 2){
+        img(height = 240, width = 300, src = 'gracilaria.png')
+      }
+      else if(input$pick_species == 3){
+        img(height = 240, width = 300, src = 'sargassum.png')
+      }
+      })
 
 
 }
