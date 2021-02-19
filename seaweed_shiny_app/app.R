@@ -8,6 +8,20 @@ library(shinythemes)
 ui <- fluidPage(theme = shinytheme("cerulean"),
 
   navbarPage("Seaweed Suitability in the Gulf of Mexico",
+             tabPanel("About",
+                      sidebarLayout(
+                        sidebarPanel( # maybe add photo of seaweed aquaculture here
+
+                        ),
+                        mainPanel(
+                                   h1("About our app"),
+                                   p("seaweed....."),
+                                   br(),
+                                   h3("Citations"),
+                                   p("list citations here")
+                        ))
+                      ),
+
              tabPanel("Tab 1",
                       sidebarLayout(
                           sidebarPanel("WIDGET 1",
