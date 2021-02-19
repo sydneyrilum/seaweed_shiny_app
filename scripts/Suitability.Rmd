@@ -14,6 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(raster)
 library(sdmpredictors)
+library(maps)
+library(mapdata)
 ```
 
 
@@ -209,7 +211,7 @@ suitable_zoom <- crop(suitable_areas, extent(-100, -80, 22, 35))
 
 # plot
 plot(suitable_zoom)
-#map('world',fill=T,add=T,col='gray')
+map('world',fill=T,add=T,col='gray')
 
 
 ```
@@ -268,13 +270,13 @@ exclusion <- overlay( mpa,
                       fun = function(a, b, c, d, e, f){a*b*c*d*e*f})
 
 plot(exclusion)
-# map('world',fill=T,add=T,col='gray')
+map('world',fill=T,add=T,col='gray')
 
 # zoom in to see
 exclusion_zoom <- crop(exclusion, extent(-100, -80, 22, 35))
 
 plot(exclusion_zoom)
-# map('world',fill=T,add=T,col='gray')
+map('world',fill=T,add=T,col='gray')
 
 ```
 
@@ -300,7 +302,7 @@ map('world',fill=T,add=T,col='gray')
 suitability_zoom <- crop(suitable_areas, extent(-100, -80, 22, 35))
 
 plot(suitability_zoom)
-# map('world',fill=T,add=T,col='gray')
+map('world',fill=T,add=T,col='gray')
 
 ```
 
