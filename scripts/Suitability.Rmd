@@ -281,12 +281,23 @@ map('world',fill=T,add=T,col='gray')
 ```
 
 # Final Suitability Map
-```{r}
 
-suitable_areas <- overlay(np_binary, 
-                          depth_binary, 
-                          max_sst_binary,
-                          min_sst_binary, 
+
+```{r}
+# Get matching resolutions, extents,and columns to overlay suitability and exclusion
+np_binary_2 <- resample(np_binary, mpa)
+depth_binary_2 <- resample(depth_binary, mpa)
+max_sst_binary_2 <- resample(max_sst_binary, mpa)
+min_sst_binary_2 <- resample(min_sst_binary, mpa)
+```
+
+
+
+```{r}
+suitable_areas <- overlay(np_binary_2, 
+                          depth_binary_2, 
+                          max_sst_binary_2,
+                          min_sst_binary_2, 
                           mpa,
                           shipping_lanes,
                           sub_cable_areas,
@@ -309,14 +320,14 @@ map('world',fill=T,add=T,col='gray')
 ```{r}
 
 # Sargassum
-save_map(raster = suitability_zoom,
-         png_name = "sargassum_sui_excl.png", title = "Sargassum Suitability + Exclusion", 
-         color = "purple")
+#save_map(raster = suitability_zoom,
+        # png_name = "sargassum_sui_excl.png", title = "Sargassum Suitability + Exclusion", 
+        # color = "purple")
 
 # Gracilaria
-save_map(raster = suitability_zoom, 
-         png_name = "gracilaria_sui_excl_L.png", title = "Gracilaria Full Suitability Map", 
-         color = "blue")
+#save_map(raster = suitability_zoom, 
+         #png_name = "gracilaria_sui_excl_L.png", title = "Gracilaria Full Suitability Map", 
+         #color = "blue")
 
 ```
 
