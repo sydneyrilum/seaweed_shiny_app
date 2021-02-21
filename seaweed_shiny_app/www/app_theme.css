@@ -1,1 +1,106 @@
 /* APP THEME */
+
+@import url('https://fonts.googleapis.com/css2?family=Almendra&family=Bungee+Hairline&family=Cinzel+Decorative&family=Cormorant+Garamond:wght@300&family=IM+Fell+DW+Pica+SC&family=Imbue:wght@300;400&family=Josefin+Slab:ital@0;1&family=Lateef&family=Mountains+of+Christmas&family=Noto+Serif:wght@700&family=Staatliches&family=Stint+Ultra+Expanded&family=Taviraj&family=Thasadith&family=Titillium+Web:ital,wght@0,300;1,200&family=Trochut&family=Wire+One&family=Yanone+Kaffeesatz:wght@300;400&display=swap');
+
+/* FONTS */
+
+/* font-family: 'Almendra', serif; X
+font-family: 'Bungee Hairline', cursive; X
+font-family: 'Cinzel Decorative', cursive; X
+font-family: 'Cormorant Garamond', serif;
+font-family: 'IM Fell DW Pica SC', serif; X
+font-family: 'Imbue', serif;
+font-family: 'Josefin Slab', serif;   TITLE?
+font-family: 'Lateef', cursive;
+font-family: 'Mountains of Christmas', cursive; X
+font-family: 'Noto Serif', serif;
+font-family: 'Staatliches', cursive;
+font-family: 'Stint Ultra Expanded', cursive;
+font-family: 'Taviraj', serif;
+font-family: 'Thasadith', sans-serif;
+font-family: 'Titillium Web', sans-serif; X
+font-family: 'Trochut', cursive;
+font-family: 'Wire One', sans-serif; X
+font-family: 'Yanone Kaffeesatz', sans-serif; TITLE? */
+
+h1 {
+  font-family: "Thasadith";
+  font-size: 30px;
+  color: #e0bf53;
+}
+
+h2{
+  font-family: "Lateef";
+  font-size: 25px;
+  color: ivory;
+  font-weight: 50;
+}
+
+h3{
+  font-family: "Staatliches";
+  font-size: 14px;
+  color: black;
+}
+
+h4{
+  font-family: "Stint Ultra Expanded";
+  font-size: 14px;
+  color: black;
+}
+
+h5{
+  font-family: "Lateef";
+  font-size: 30px;
+  color: #233a5e;
+  font-weight: bold;
+}
+
+/* Main Text */
+body{
+  font-family: "Lateef";
+  font-size: 25px;
+  color: ivory;
+  background-color: #233a5e;
+}
+
+/* Navbar Fill Color */
+.navbar-default {
+  background-color: #e6d393;
+}
+
+/* Navbar Title */
+.navbar-default .navbar-brand {
+  color: #233a5e;
+  font-family: "Josefin Slab";
+  font-size: 45px;
+}
+
+/* Tab Content Fill Color */
+.tab-content{
+  background-color: #3e5c8b;
+}
+
+/* Tab Label Fill Color */
+.nav {
+  background-color: ivory !important;
+}
+
+/* Tab Label Text */
+.nav>li>a {
+  color: #233a5e !important;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Change bullets */
+ul > li::market  {
+  font-size: 1.125em;
+  color: #ff414b;
+}
+
+/* Change link appearance */
+d-article a  {
+  border-bottom: 2px solid #ffd8db;
+  text-decoration: none;
+}
+
