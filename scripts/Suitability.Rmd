@@ -289,7 +289,7 @@ velocity_map <-
 
 velocity_map 
 
-ggsave("current_velocity.png", plot = velocity_map)
+# ggsave("current_velocity.png", plot = velocity_map)
 
 ```
 
@@ -306,21 +306,43 @@ Suitability areas -- all bio-oracle
 
 suitable_areas <- raster::overlay(np_binary,
                                   depth_binary, 
-                                  max_sst_binary,
-                                  min_sst_binary, 
-                                  sal_max_binary, 
+                                  #max_sst_binary,
+                                  #min_sst_binary, 
+                                  #sal_max_binary, 
                                   sal_min_binary, 
                                   curvel_max_binary, 
-                                  curvel_min_binary,
-                          fun = function(a, b, c, d, e, f, g, h){a*b*c*d*e*f*g*h})
-# zoom in to see
-suitable_zoom <- crop(suitable_areas, extent(-100, -80, 22, 35))
-
+                                  #curvel_min_binary,
+                          fun = function(a, b, c, d){a*b*c*d})
 
 # plot
-plot(suitable_zoom)
-map('world',fill=T,add=T,col='gray')
+#plot(suitable_zoom)
+#map('world',fill=T,add=T,col='gray')
 
+
+# Convert to data frame
+suitable_areas_df <- raster::rasterToPoints(suitable_areas) %>%
+  as.data.frame() %>% 
+  mutate(suit = case_when(
+    layer == 1 ~ "suitable",
+    layer == 0 ~ "unsuitable"
+  ))
+
+
+suitable_areas_map <-
+  ggplot() +
+  geom_raster(data = suitable_areas_df, aes(x = x, y = y, fill = suit)) +
+  geom_sf(data = world, fill = "cornsilk3") +
+  coord_sf(xlim = c(-100, -80), ylim = c(22, 32)) +
+  scale_fill_manual(values = c("olivedrab", "lightgray")) +
+  theme_minimal() +
+  labs(fill = "",
+       x = "longitude",
+       y = "latitude", 
+       title = "Suitable Seaweed Aquaculture Areas")
+
+suitable_areas_map 
+
+#ggsave("suitable_areas.png", plot = suitable_areas_map)
 
 ```
 
@@ -472,20 +494,40 @@ shipping_lanes_map
 ```{r}
 exclusion <- overlay( mpa,
                       shipping_lanes,
-                      sub_cable_areas,
-                      pipeline_areas,
+                      #sub_cable_areas,
+                      #pipeline_areas,
                       military_danger,
-                      oil_gas_platforms,
-                      fun = function(a, b, c, d, e, f){a*b*c*d*e*f})
+                      #oil_gas_platforms,
+                      fun = function(a, b, c){a*b*c})
 
-plot(exclusion)
-map('world',fill=T,add=T,col='gray')
+#plot(exclusion)
+#map('world',fill=T,add=T,col='gray')
 
-# zoom in to see
-exclusion_zoom <- crop(exclusion, extent(-100, -80, 22, 35))
 
-plot(exclusion_zoom)
-map('world',fill=T,add=T,col='gray')
+# Convert to data frame
+exclusion_areas_df <- raster::rasterToPoints(exclusion) %>%
+  as.data.frame() %>% 
+  mutate(suit = case_when(
+    layer == 1 ~ "not excluded",
+    layer == 0 ~ "excluded"
+  ))
+
+
+exclusion_areas_map <-
+  ggplot() +
+  geom_raster(data = exclusion_areas_df, aes(x = x, y = y, fill = suit)) +
+  geom_sf(data = world, fill = "cornsilk3") +
+  coord_sf(xlim = c(-100, -80), ylim = c(22, 32)) +
+  scale_fill_manual(values = c("rosybrown3", "lightgray")) +
+  theme_minimal() +
+  labs(fill = "",
+       x = "longitude",
+       y = "latitude", 
+       title = "Excluded Seaweed Aquaculture Areas")
+
+exclusion_areas_map 
+
+#ggsave("exclusion_areas.png", plot = exclusion_areas_map)
 
 ```
 
@@ -498,31 +540,55 @@ np_binary_2 <- resample(np_binary, mpa)
 depth_binary_2 <- resample(depth_binary, mpa)
 max_sst_binary_2 <- resample(max_sst_binary, mpa)
 min_sst_binary_2 <- resample(min_sst_binary, mpa)
+sal_min_binary_2 <- resample(sal_min_binary, mpa)
+curvel_max_binary_2 <- resample(curvel_max_binary, mpa)
 ```
 
 
 
 ```{r}
-suitable_areas <- overlay(np_binary_2, 
+seaweed_areas <- overlay(np_binary_2, 
                           depth_binary_2, 
-                          max_sst_binary_2,
-                          min_sst_binary_2, 
+                          #max_sst_binary_2,
+                          #min_sst_binary_2, 
+                          #sal_max_binary, 
+                          sal_min_binary_2, 
+                          curvel_max_binary_2, 
+                          #curvel_min_binary,
                           mpa,
                           shipping_lanes,
-                          sub_cable_areas,
-                          pipeline_areas,
+                          #sub_cable_areas,
+                          #pipeline_areas,
                           military_danger,
-                          oil_gas_platforms,
-                          fun = function(a, b, c, d, e, f, g, h, i, j){a*b*c*d*e*f*g*h*i*j})
+                          #oil_gas_platforms,
+                          fun = function(a, b, c, d, e, f, g){a*b*c*d*e*f*g})
 
-plot(suitable_areas)
-map('world',fill=T,add=T,col='gray')
+#plot(suitable_areas)
+#map('world',fill=T,add=T,col='gray')
 
-# zoom in to see
-suitability_zoom <- crop(suitable_areas, extent(-100, -80, 22, 35))
+# Convert to data frame
+seaweed_df <- raster::rasterToPoints(seaweed_areas) %>%
+  as.data.frame() %>% 
+  mutate(suit = case_when(
+    layer == 0 ~ "unsuitable", TRUE ~ "suitable"
+  ))
 
-plot(suitability_zoom)
-map('world',fill=T,add=T,col='gray')
+
+seaweed_map <-
+  ggplot() +
+  geom_raster(data = seaweed_df, aes(x = x, y = y, fill = suit)) +
+  geom_sf(data = world, fill = "cornsilk3") +
+  coord_sf(xlim = c(-100, -80), ylim = c(22, 32)) +
+  scale_fill_manual(values = c("olivedrab", "lightgray")) +
+  theme_minimal() +
+  labs(fill = "",
+       x = "longitude",
+       y = "latitude", 
+       title = "Potential Seaweed Aquaculture Areas")
+
+seaweed_map 
+
+#ggsave("seaweed.png", plot = seaweed_map)
 
 ```
 
