@@ -135,19 +135,19 @@ server <- function(input, output) {
 
     output$suitability <- renderPrint({
       if(input$radio1 == "1"){
-        img(height = "75%", width = "75%", src = 'gracilaria.png')
+        img(height = "85%", width = "85%", src = 'depth.png')
       }
       else
         if(input$radio1 == "2"){
-          img(height = "75%", width = "75%", src = 'sargassum.png')
+          img(height = "85%", width = "85%", src = 'salinity.png')
         }
       else
         if(input$radio1 == "3"){
-          img(height = "75%", width = "75%", src = 'eucheuma.png')
+          img(height = "85%", width = "85%", src = 'current_velocity.png')
         }
       else
         if(input$radio1 == "4"){
-          img(height = "75%", width = "75%", src = 'ulva.png')
+          img(height = "85%", width = "85%", src = 'np_ratio.png')
         }
     })
 
