@@ -3,6 +3,11 @@
 library(tidyverse)
 library(shiny)
 library(shinythemes)
+library(raster)
+library(sdmpredictors)
+library(maps)
+library(mapdata)
+library(here)
 
 # Create the user interface:
 ui <- fluidPage(theme = "app_theme.css",
@@ -68,16 +73,15 @@ ui <- fluidPage(theme = "app_theme.css",
              tabPanel("Tab 3",
                       sidebarLayout(
                         sidebarPanel(checkboxGroupInput(inputId = "checkGroup",
-                                                        label = h5("Marine Activities"),
+                                                        label = h5("Potential Seaweed Aquaculture Sites:"),
                                                         choiceNames = list(
-                                                          tags$span("Marine Protected Areas", style = "color: black;"),
-                                                          tags$span("Oil and Gas Wells/Platforms", style = "color: black;"),
-                                                          tags$span("Danger and Restricted Zones", style = "color: black;")
+                                                          tags$span("Combined exclusion factors", style = "color: black;"),
+                                                          tags$span("Combined suitability factors", style = "color: black;")
                                                           ),
-                                                        choiceValues = c("1", "2", "3"),
-                                                        selected = 1)
+                                                        choiceValues = c("1", "2")
+                                                        )
                           ),
-                        mainPanel("OUTPUT 4"
+                        mainPanel(plotOutput("potential_sites")
                                   ))
                       )
              )
@@ -163,6 +167,23 @@ server <- function(input, output) {
       else
         if(input$radio2 == 5){
           img(height = "75%", width = "75%", src = 'ulva.png')
+        }
+    })
+
+    seaweed_reactive <- reactive({
+      # Marine protected areas
+      mpa <- raster(paste0(here("data", "Active_Data_Layers", "mpas_binary_hy.tif")))
+    })
+
+
+
+    output$potential_sites <- renderPlot({
+      if(input$checkGroup == 1){
+        plot(seaweed_reactive)
+      }
+      else
+        if(input$checkGroup == 2){
+          img(height = "75%", width = "75%", src = 'sargassum.png')
         }
     })
 
