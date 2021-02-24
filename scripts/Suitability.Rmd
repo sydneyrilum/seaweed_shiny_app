@@ -261,9 +261,35 @@ curvel_max_binary <- reclass_data(raster = curvel_max, max_thresh = max_curvel_v
 curvel_min_binary <- reclass_data(raster = curvel_min, min_thresh = min_curvel_value, 
                         one_thresh = TRUE, which_thresh = "MIN")
 
+######### we need to figure out how to combine rasters and clip overlap, but for now just using max velocity variable
 # plot
-plot(curvel_max_binary)
-plot(curvel_min_binary)
+#plot(curvel_max_binary) # selecting max velocity for now...
+#plot(curvel_min_binary)
+
+# Convert to data frame
+velocity_df <- raster::rasterToPoints(curvel_max_binary) %>%
+  as.data.frame() %>% 
+  mutate(suit = case_when(
+    curvel_max_mask == 1 ~ "suitable",
+    curvel_max_mask == 0 ~ "unsuitable"
+  ))
+
+
+velocity_map <-
+  ggplot() +
+  geom_raster(data = velocity_df, aes(x = x, y = y, fill = suit)) +
+  geom_sf(data = world, fill = "cornsilk3") +
+  coord_sf(xlim = c(-100, -80), ylim = c(22, 32)) +
+  scale_fill_manual(values = c("olivedrab", "lightgray")) +
+  theme_minimal() +
+  labs(fill = "",
+       x = "longitude",
+       y = "latitude", 
+       title = "Current Velocity Suitability")
+
+velocity_map 
+
+ggsave("current_velocity.png", plot = velocity_map)
 
 ```
 
