@@ -93,7 +93,11 @@ depth_binary <- reclassify(depth_mask, rcl = rcl_matrix_depth)
 
 # Convert to data frame
 depth_df <- raster::rasterToPoints(depth_binary) %>%
-  as.data.frame()
+  as.data.frame()%>% 
+  mutate(suit = case_when(
+    depth_mask_bo == 1 ~ "suitable",
+    depth_mask_bo == 0 ~ "unsuitable"
+  ))
 
 
 # Plot reclassified layer
@@ -103,19 +107,19 @@ world <- ne_countries(scale = "medium", returnclass = "sf")
 
 depth_map <-
   ggplot() +
-  geom_raster(data = depth_df, aes(x = x, y = y, fill = depth_mask_bo)) +
+  geom_raster(data = depth_df, aes(x = x, y = y, fill = suit)) +
   geom_sf(data = world, fill = "cornsilk3") +
-  scale_fill_gradientn(colors = c("lightgray", "olivedrab")) +
   coord_sf(xlim = c(-100, -80), ylim = c(22, 32)) +
+  scale_fill_manual(values = c("olivedrab", "lightgray")) +
   theme_minimal() +
-  theme(legend.position = "none") +
-  labs(x = "longitude",
+  labs(fill = "",
+       x = "longitude",
        y = "latitude", 
        title = "Depth Suitability")
 
 depth_map 
 
-ggsave("depth.png", plot = depth_map)
+#ggsave("depth.png", plot = depth_map)
 
 ```
 
@@ -168,7 +172,35 @@ np_binary <- reclass_data(raster = n_p_ratio, min_thresh = n_p_ratio_min,
                           max_thresh = n_p_ratio_max, one_thresh = FALSE)
 
 # plot reclassified layer
-plot(np_binary)
+# plot(np_binary)
+
+# Convert to data frame
+np_df <- raster::rasterToPoints(np_binary) %>%
+  as.data.frame() %>% 
+  mutate(suit = case_when(
+    n_p_ratio == 1 ~ "suitable",
+    n_p_ratio == 0 ~ "unsuitable"
+  ))
+
+
+# Plot reclassified layer
+# plot(depth_binary)
+
+np_map <-
+  ggplot() +
+  geom_raster(data = np_df, aes(x = x, y = y, fill = suit)) +
+  geom_sf(data = world, fill = "cornsilk3") +
+  coord_sf(xlim = c(-100, -80), ylim = c(22, 32)) +
+  scale_fill_manual(values = c("olivedrab", "lightgray")) +
+  theme_minimal() +
+  labs(fill = "",
+       x = "longitude",
+       y = "latitude", 
+       title = "Nitrogen and Phosphorus Suitability")
+
+np_map 
+
+#ggsave("np_ratio.png", plot = np_map)
 ```
 
 Salinity
@@ -185,8 +217,34 @@ sal_min_binary <- reclass_data(raster = sal_min, min_thresh = min_sal_value,
                         one_thresh = TRUE, which_thresh = "MIN")
 
 # plot
-plot(sal_max_binary)
-plot(sal_min_binary)
+# plot(sal_max_binary)
+# plot(sal_min_binary) # use this one for total salinity suitability
+
+# Convert to data frame
+salinity_df <- raster::rasterToPoints(sal_min_binary) %>%
+  as.data.frame() %>% 
+  mutate(suit = case_when(
+    sal_min_mask == 1 ~ "suitable",
+    sal_min_mask == 0 ~ "unsuitable"
+  ))
+
+
+salinity_map <-
+  ggplot() +
+  geom_raster(data = salinity_df, aes(x = x, y = y, fill = suit)) +
+  geom_sf(data = world, fill = "cornsilk3") +
+  coord_sf(xlim = c(-100, -80), ylim = c(22, 32)) +
+  scale_fill_manual(values = c("olivedrab", "lightgray")) +
+  theme_minimal() +
+  labs(fill = "",
+       x = "longitude",
+       y = "latitude", 
+       title = "Salinity Suitability")
+
+salinity_map 
+
+#ggsave("salinity.png", plot = salinity_map)
+
 
 ```
 
