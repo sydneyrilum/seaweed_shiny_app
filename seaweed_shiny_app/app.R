@@ -54,19 +54,17 @@ ui <- fluidPage(theme = "app_theme.css",
                                                   choiceNames = list(
                                                     tags$span("Depth", style = "color: black;"),
                                                     tags$span("Salinity", style = "color: black;"),
-                                                    tags$span("Current velocity", style = "color: black;"),
-                                                    tags$span("Nitrogen:Phosphorus ratio", style = "color: black;")),
+                                                    tags$span("Current Velocity", style = "color: black;"),
+                                                    tags$span("Nitrogen:Phosphorus Ratio", style = "color: black;")),
                                                   choiceValues = c("1", "2", "3", "4"),
                                                   selected = 1),
                                      radioButtons(inputId = "radio2",
                                                   label = h5("Exclusion Factors"),
                                                   choiceNames = list(
                                                     tags$span("Marine Protected Areas", style = "color: black;"),
-                                                    tags$span("Shipping lanes", style = "color: black;"),
-                                                    tags$span("Pipelines", style = "color: black;"),
-                                                    tags$span("Military danger zones", style = "color: black;"),
-                                                    tags$span("Oil and gas platforms", style = "color: black;")),
-                                                  choiceValues = c("1", "2", "3", "4", "5"),
+                                                    tags$span("Shipping Lanes", style = "color: black;"),
+                                                    tags$span("Military Danger Zones", style = "color: black;")),
+                                                  choiceValues = c("1", "2", "3"),
                                                   selected = 1),
                                      ),
                         mainPanel(uiOutput("suitability"),
@@ -153,23 +151,15 @@ server <- function(input, output) {
 
     output$exclusion <- renderPrint({
       if(input$radio2 == "1"){
-        img(height = "75%", width = "75%", src = 'gracilaria.png')
+        img(height = "85%", width = "85%", src = 'mpa.png')
       }
       else
         if(input$radio2 == "2"){
-          img(height = "75%", width = "75%", src = 'sargassum.png')
+          img(height = "85%", width = "85%", src = 'shipping_lanes.png')
         }
       else
         if(input$radio2 == "3"){
-          img(height = "75%", width = "75%", src = 'eucheuma.png')
-        }
-      else
-        if(input$radio2 == "4"){
-          img(height = "75%", width = "75%", src = 'ulva.png')
-        }
-      else
-        if(input$radio2 == "5"){
-          img(height = "75%", width = "75%", src = 'ulva.png')
+          img(height = "85%", width = "85%", src = 'military.png')
         }
     })
 
