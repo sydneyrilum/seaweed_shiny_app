@@ -76,13 +76,13 @@ ui <- fluidPage(theme = "app_theme.css",
                         sidebarPanel(checkboxGroupInput(inputId = "checkGroup",
                                                         label = h5("Potential Seaweed Aquaculture Sites:"),
                                                         choiceNames = list(
-                                                          tags$span("Combined exclusion factors", style = "color: black;"),
-                                                          tags$span("Combined suitability factors", style = "color: black;")
+                                                          tags$span("Combined Suitability factors", style = "color: black;"),
+                                                          tags$span("Combined Exclusion factors", style = "color: black;")
                                                           ),
                                                         choiceValues = c("1", "2")
                                                         )
                           ),
-                        mainPanel(plotOutput("potential_sites")
+                        mainPanel(uiOutput("potential_sites")
                                   ))
                       )
              )
@@ -163,27 +163,19 @@ server <- function(input, output) {
         }
     })
 
-    seaweed_reactive <- reactive({
-      # Marine protected areas
-      mpa <- raster(paste0(here("data", "Active_Data_Layers", "mpas_binary_hy.tif")))
-    })
-
-
-
-    output$potential_sites <- renderPlot({
-      if(identical(input$checkGroup, 1)){
-        img(height = "75%", width = "75%", src = 'sargassum.png')
+    output$potential_sites <- renderPrint({
+      if(input$checkGroup == "1"){
+        img(height = "85%", width = "85%", src = 'suitable_areas.png')
       }
       else
-        if(identical(input$checkGroup, 2)){
-          img(height = "75%", width = "75%", src = 'ulva.png')
+        if(input$checkGroup == "2"){
+          img(height = "85%", width = "85%", src = 'exclusion_areas.png')
         }
       else
-        if(identical(input$checkGroup, c(1,2))){
-          img(height = "75%", width = "75%", src = 'euchema.png')
+        if(input$checkGroup %in% c(1,2)){
+          img(height = "85%", width = "85%", src = 'seaweed.png')
         }
     })
-
 
 
 }
