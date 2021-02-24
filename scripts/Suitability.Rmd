@@ -16,6 +16,7 @@ library(raster)
 library(sdmpredictors)
 library(maps)
 library(mapdata)
+library(rnaturalearth)
 ```
 
 
@@ -90,8 +91,31 @@ rcl_matrix_depth <- c(-Inf, max_depth, 0,
 # Reclassify 
 depth_binary <- reclassify(depth_mask, rcl = rcl_matrix_depth)
 
+# Convert to data frame
+depth_df <- raster::rasterToPoints(depth_binary) %>%
+  as.data.frame()
+
+
 # Plot reclassified layer
-plot(depth_binary)
+# plot(depth_binary)
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+depth_map <-
+  ggplot() +
+  geom_raster(data = depth_df, aes(x = x, y = y, fill = depth_mask_bo)) +
+  geom_sf(data = world, fill = "cornsilk3") +
+  scale_fill_gradientn(colors = c("lightgray", "olivedrab")) +
+  coord_sf(xlim = c(-100, -80), ylim = c(22, 32)) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  labs(x = "longitude",
+       y = "latitude", 
+       title = "Depth Suitability")
+
+depth_map 
+
+ggsave("depth.png", plot = depth_map)
 
 ```
 
