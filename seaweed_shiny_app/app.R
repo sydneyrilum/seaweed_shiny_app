@@ -1,9 +1,8 @@
 # This is our seaweed shiny app!
-
+library(raster)
 library(tidyverse)
 library(shiny)
 library(shinythemes)
-library(raster)
 library(sdmpredictors)
 library(maps)
 library(mapdata)
@@ -52,18 +51,22 @@ ui <- fluidPage(theme = "app_theme.css",
                       sidebarLayout(
                         sidebarPanel(radioButtons(inputId = "radio1",
                                                   label = h5("Suitability Factors"),
-                                                  choices = list("Depth" = 1,
-                                                                 "Salinity" = 2,
-                                                                 "Current velocity" = 3,
-                                                                 "Nitrogen:Phosphorus ratio" = 4),
+                                                  choiceNames = list(
+                                                    tags$span("Depth", style = "color: black;"),
+                                                    tags$span("Salinity", style = "color: black;"),
+                                                    tags$span("Current velocity", style = "color: black;"),
+                                                    tags$span("Nitrogen:Phosphorus ratio", style = "color: black;")),
+                                                  choiceValues = c("1", "2", "3", "4"),
                                                   selected = 1),
                                      radioButtons(inputId = "radio2",
                                                   label = h5("Exclusion Factors"),
-                                                  choices = list("Marine Protected Areas" = 1,
-                                                                 "Shipping lanes" = 2,
-                                                                 "Pipelines" = 3,
-                                                                 "Military danger zones" = 4,
-                                                                 "Oil and gas platforms" = 5),
+                                                  choiceNames = list(
+                                                    tags$span("Marine Protected Areas", style = "color: black;"),
+                                                    tags$span("Shipping lanes", style = "color: black;"),
+                                                    tags$span("Pipelines", style = "color: black;"),
+                                                    tags$span("Military danger zones", style = "color: black;"),
+                                                    tags$span("Oil and gas platforms", style = "color: black;")),
+                                                  choiceValues = c("1", "2", "3", "4", "5"),
                                                   selected = 1),
                                      ),
                         mainPanel(uiOutput("suitability"),
@@ -131,41 +134,41 @@ server <- function(input, output) {
 
 
     output$suitability <- renderPrint({
-      if(input$radio1 == 1){
+      if(input$radio1 == "1"){
         img(height = "75%", width = "75%", src = 'gracilaria.png')
       }
       else
-        if(input$radio1 == 2){
+        if(input$radio1 == "2"){
           img(height = "75%", width = "75%", src = 'sargassum.png')
         }
       else
-        if(input$radio1 == 3){
+        if(input$radio1 == "3"){
           img(height = "75%", width = "75%", src = 'eucheuma.png')
         }
       else
-        if(input$radio1 == 4){
+        if(input$radio1 == "4"){
           img(height = "75%", width = "75%", src = 'ulva.png')
         }
     })
 
     output$exclusion <- renderPrint({
-      if(input$radio2 == 1){
+      if(input$radio2 == "1"){
         img(height = "75%", width = "75%", src = 'gracilaria.png')
       }
       else
-        if(input$radio2 == 2){
+        if(input$radio2 == "2"){
           img(height = "75%", width = "75%", src = 'sargassum.png')
         }
       else
-        if(input$radio2 == 3){
+        if(input$radio2 == "3"){
           img(height = "75%", width = "75%", src = 'eucheuma.png')
         }
       else
-        if(input$radio2 == 4){
+        if(input$radio2 == "4"){
           img(height = "75%", width = "75%", src = 'ulva.png')
         }
       else
-        if(input$radio2 == 5){
+        if(input$radio2 == "5"){
           img(height = "75%", width = "75%", src = 'ulva.png')
         }
     })
@@ -178,12 +181,16 @@ server <- function(input, output) {
 
 
     output$potential_sites <- renderPlot({
-      if(input$checkGroup == 1){
-        plot(seaweed_reactive)
+      if(identical(input$checkGroup, 1)){
+        img(height = "75%", width = "75%", src = 'sargassum.png')
       }
       else
-        if(input$checkGroup == 2){
-          img(height = "75%", width = "75%", src = 'sargassum.png')
+        if(identical(input$checkGroup, 2)){
+          img(height = "75%", width = "75%", src = 'ulva.png')
+        }
+      else
+        if(identical(input$checkGroup, c(1,2))){
+          img(height = "75%", width = "75%", src = 'euchema.png')
         }
     })
 
