@@ -45,18 +45,24 @@ ui <- fluidPage(theme = "app_theme.css",
                       ),
              tabPanel("Tab 2",
                       sidebarLayout(
-                        sidebarPanel(sliderInput(inputId = "slider1",
-                                                 label = h5("Temperature (C)"),
-                                                 min = 0,
-                                                 max = 100,
-                                                 value = 50),
-                                     sliderInput(inputId = "slider2",
-                                                 label = h5("Salinity (ppt)"),
-                                                 min = 30,
-                                                 max = 40,
-                                                 value = 35)
+                        sidebarPanel(radioButtons(inputId = "radio1",
+                                                  label = h5("Suitability Factors"),
+                                                  choices = list("Depth" = 1,
+                                                                 "Salinity" = 2,
+                                                                 "Current velocity" = 3,
+                                                                 "Nitrogen:Phosphorus ratio" = 4),
+                                                  selected = 1),
+                                     radioButtons(inputId = "radio2",
+                                                  label = h5("Exclusion Factors"),
+                                                  choices = list("Marine Protected Areas" = 1,
+                                                                 "Shipping lanes" = 2,
+                                                                 "Pipelines" = 3,
+                                                                 "Military danger zones" = 4,
+                                                                 "Oil and gas platforms" = 5),
+                                                  selected = 1),
                                      ),
-                        mainPanel("OUTPUT 2 + 3"
+                        mainPanel(uiOutput("suitability"),
+                                  uiOutput("exclusion")
                                   ))
                       ),
              tabPanel("Tab 3",
@@ -118,6 +124,48 @@ server <- function(input, output) {
       })
 
     output$tab1text <- renderText(h3(output$text))
+
+
+    output$suitability <- renderPrint({
+      if(input$radio1 == 1){
+        img(height = "75%", width = "75%", src = 'gracilaria.png')
+      }
+      else
+        if(input$radio1 == 2){
+          img(height = "75%", width = "75%", src = 'sargassum.png')
+        }
+      else
+        if(input$radio1 == 3){
+          img(height = "75%", width = "75%", src = 'eucheuma.png')
+        }
+      else
+        if(input$radio1 == 4){
+          img(height = "75%", width = "75%", src = 'ulva.png')
+        }
+    })
+
+    output$exclusion <- renderPrint({
+      if(input$radio2 == 1){
+        img(height = "75%", width = "75%", src = 'gracilaria.png')
+      }
+      else
+        if(input$radio2 == 2){
+          img(height = "75%", width = "75%", src = 'sargassum.png')
+        }
+      else
+        if(input$radio2 == 3){
+          img(height = "75%", width = "75%", src = 'eucheuma.png')
+        }
+      else
+        if(input$radio2 == 4){
+          img(height = "75%", width = "75%", src = 'ulva.png')
+        }
+      else
+        if(input$radio2 == 5){
+          img(height = "75%", width = "75%", src = 'ulva.png')
+        }
+    })
+
 
 
 }
