@@ -338,7 +338,108 @@ military_danger <- raster(paste0(path,"/danger_binary_hy.tif"))
 # Oil and Gas platforms
 oil_gas_platforms <- raster(paste0(path,"/og_binary_hy.tif"))
 
+plot(mpa)
+
+plot(shipping_lanes)
+
+plot(military_danger)
+
 ```
+
+```{r}
+# Marine protected areas exclusion map
+
+# Convert to data frame
+mpa_df <- raster::rasterToPoints(mpa) %>%
+  as.data.frame() %>% 
+  mutate(suit = case_when(
+    mpas_binary_hy == 1 ~ "not excluded",
+    mpas_binary_hy == 0 ~ "excluded"
+  ))
+
+
+mpa_map <-
+  ggplot() +
+  geom_raster(data = mpa_df, aes(x = x, y = y, fill = suit)) +
+  geom_sf(data = world, fill = "cornsilk3") +
+  coord_sf(xlim = c(-100, -80), ylim = c(22, 32)) +
+  scale_fill_manual(values = c("rosybrown3", "lightgray")) +
+  theme_minimal() +
+  labs(fill = "",
+       x = "longitude",
+       y = "latitude", 
+       title = "Marine Protected Areas Exclusion")
+
+mpa_map 
+
+# ggsave("mpa.png", plot = mpa_map)
+
+```
+
+```{r}
+# Military Danger Zones
+
+# Convert to data frame
+military_df <- raster::rasterToPoints(military_danger) %>%
+  as.data.frame() %>% 
+  mutate(suit = case_when(
+    danger_binary_hy == 1 ~ "not excluded",
+    danger_binary_hy == 0 ~ "excluded"
+  ))
+
+
+military_map <-
+  ggplot() +
+  geom_raster(data = military_df, aes(x = x, y = y, fill = suit)) +
+  geom_sf(data = world, fill = "cornsilk3") +
+  coord_sf(xlim = c(-100, -80), ylim = c(22, 32)) +
+  scale_fill_manual(values = c("rosybrown3", "lightgray")) +
+  theme_minimal() +
+  labs(fill = "",
+       x = "longitude",
+       y = "latitude", 
+       title = "Military Danger Zones Exclusion")
+
+military_map
+
+#ggsave("military.png", plot = military_map)
+  
+
+
+```
+
+
+```{r}
+# Shipping Lanes
+
+# Convert to data frame
+shipping_lanes_df <- raster::rasterToPoints(shipping_lanes) %>%
+  as.data.frame() %>% 
+  mutate(suit = case_when(
+    ship_binary_hy == 1 ~ "not excluded",
+    ship_binary_hy == 0 ~ "excluded"
+  ))
+
+
+shipping_lanes_map <-
+  ggplot() +
+  geom_raster(data = shipping_lanes_df, aes(x = x, y = y, fill = suit)) +
+  geom_sf(data = world, fill = "cornsilk3") +
+  coord_sf(xlim = c(-100, -80), ylim = c(22, 32)) +
+  scale_fill_manual(values = c("rosybrown3", "lightgray")) +
+  theme_minimal() +
+  labs(fill = "",
+       x = "longitude",
+       y = "latitude", 
+       title = "Shipping Lanes Exclusion")
+
+shipping_lanes_map
+
+#ggsave("shipping_lanes.png", plot = shipping_lanes_map)
+  
+
+```
+
 
 # Eclusion Map
 
