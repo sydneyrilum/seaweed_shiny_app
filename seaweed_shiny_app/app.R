@@ -164,19 +164,23 @@ server <- function(input, output) {
     })
 
     output$potential_sites <- renderPrint({
-      if(input$checkGroup == "1"){
+      if(length(input$checkGroup) == 0){
+        img(height = "75%", width = "75%", src = 'seaweed_farm_placeholder.png')
+        }
+
+      else if(length(input$checkGroup) == 1){
+        if(input$checkGroup == "1"){
         img(height = "85%", width = "85%", src = 'suitable_areas.png')
-      }
-      else
-        if(input$checkGroup == "2"){
+        } else if(input$checkGroup == "2"){
           img(height = "85%", width = "85%", src = 'exclusion_areas.png')
         }
-      else
-        if(input$checkGroup %in% c(1,2)){
+      }
+
+      else if(length(input$checkGroup) == 2)
+        {
           img(height = "85%", width = "85%", src = 'seaweed.png')
         }
     })
-
 
 }
 
