@@ -22,17 +22,21 @@ ui <- fluidPage(theme = "app_theme.css",
                                          h2(p("A group of researchers including AnnaClaire Marley, Phoebe Racine, Gabriel de la Rosa at the Bren School of Enviromental Science & Management began this project with the goal encouraging an increase in seaweed aquaculture in order to better take advantage of the natural nutrient removal capabilities of seaweed species which can attribute to eutrophication stabilization and pollution reduction. This project looks at various abiotic restrictions and marine activities to determine areas most suitable to carry out a more developed venture of seaweed aquaculture in the Gulf of Mexico. These restrictions and activities include sea surface temperature, salinity, water depth, presence of shipping lanes, cable areas, pipelines, military bases, oil and gas platforms, and other areas generally dangerous for the seaweed to inhabit. While carbon extraction was briefly considered, this study focuses mainly on seaweeds effect on Nitrogen and Phosphorous removal and the impacts on productivity and water quality. Currently, the study has been isolated to the Gulf of Mexico, be the group has begun expanding their research and mapping out the anthropogenic pollution over the United States. With pollution increasing at alarming rates around the world, the findings in this study laid out in the final report are very important to address.")),
                                          br(),
                                          h1("Summary"),
-                                         h2(p("Our shiny app explores this potential for seaweed aquaculture to remediate nutrient pollution on a large scale using the Gulf of Mexico as a case. The two species considered in the study and reflected in this app are Gracilaria tikvahiae and Sargassum spp. The purpose of this app is to visualize the findings of the study and allow the use of an interactive tool to help push the idea of a more development seaweed aquaculture market.")),
+                                         h2(p("Our shiny app explores this potential for seaweed aquaculture to remediate nutrient pollution on a large scale using the Gulf of Mexico as a case. The two species considered in the study and reflected in this app are Gracilaria tikvahiae and Sargassum spp. The purpose of this app is to visualize the findings of the study and allow the use of an interactive tool to help push the idea of the potential for a seaweed aquaculture market.")),
                                          br(),
                                          h1("Overview"),
-                                         h2(p("The first tab introduces viewers to the two study species as well as two other important seaweed species Eucheuma spp and Ulva spp (U. prolifera). Background information on the spread of seaweed populations as well as abiotic restrictions associated with the given species are addressed within the content of this tab. The next tab adds a visualization to the abiotic features of the two study species and how suitability based on those restrictions evolved over the 2010 -2012 study period. The final tab explores the exclusions associated with various marine activities which may take precedence over aquaculture sites (e.g. shipping lanes, MPAs, military areas, oil rigs/wells).")),
+                                         tags$ul(
+                                                 tags$li("The first tab introduces viewers to the two study species as well as two other important seaweed species Eucheuma spp and Ulva spp (U. prolifera). Background information on the spread of seaweed populations as well as abiotic restrictions associated with the given species are addressed within the content of this tab."),
+                                                 tags$li("The second tab allows the user to select between various suitability and exclusion factors for seaweed aquaculture and observe the locations where seaweed aquaculture can physically thrive and where it is physically not allowed, depending on each factor."),
+                                                 tags$li("The third tab displays the combined suitable areas and the combined exclusion areas. When both choices are selected, the suitable and exclsuion layers are combined, revealing the potential seaweed aquaculture sites in the Gulf of Mexico.")),
                                          h3("Citations"),
-                                         h4(p("list citations here"))
+                                         h4(p("list citations here")),
+                                         br()
                                          )
                                   ))
                       ),
 
-             tabPanel("Tab 1",
+             tabPanel("Seaweed Species",
                       sidebarLayout(
                         sidebarPanel(selectInput(inputId = "pick_species",
                                                  label = h5("Seaweed Species"),
@@ -47,7 +51,7 @@ ui <- fluidPage(theme = "app_theme.css",
                                   textOutput("text")
                                   ))
                       ),
-             tabPanel("Tab 2",
+             tabPanel("Suitability & Exclusion Factors",
                       sidebarLayout(
                         sidebarPanel(radioButtons(inputId = "radio1",
                                                   label = h5("Suitability Factors"),
@@ -71,10 +75,10 @@ ui <- fluidPage(theme = "app_theme.css",
                                   uiOutput("exclusion")
                                   ))
                       ),
-             tabPanel("Tab 3",
+             tabPanel("Potential Aquaculture Sites",
                       sidebarLayout(
                         sidebarPanel(checkboxGroupInput(inputId = "checkGroup",
-                                                        label = h5("Potential Seaweed Aquaculture Sites:"),
+                                                        label = h5("Potential Seaweed Aquaculture Sites"),
                                                         choiceNames = list(
                                                           tags$span("Combined Suitability factors", style = "color: black;"),
                                                           tags$span("Combined Exclusion factors", style = "color: black;")
@@ -165,7 +169,7 @@ server <- function(input, output) {
 
     output$potential_sites <- renderPrint({
       if(length(input$checkGroup) == 0){
-        img(height = "75%", width = "75%", src = 'seaweed_farm_placeholder.png')
+        img(height = "70%", width = "70%", src = 'blue_background.png')
         }
 
       else if(length(input$checkGroup) == 1){
