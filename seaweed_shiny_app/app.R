@@ -14,31 +14,52 @@ ui <- fluidPage(theme = "app_theme.css",
   navbarPage("Seaweed Suitability in the Gulf of Mexico",
              tabPanel("About",
                       sidebarLayout(
-                        sidebarPanel(img(height = "150%", width = "150%", src = 'seaweed_farm_placeholder.png'),
+                        sidebarPanel(width = 6,
+                          img(height = "100%", width = "100%", src = 'seaweed_farm_placeholder.png'),
                                      tags$style(".well {background-color: ivory;}")
                                      ),
-                        mainPanel(column(10, offset = 2,
+                        mainPanel(width = 11, column(11, offset = 1,
                                          h1("Introduction"),
-                                         h2(p("A group of researchers including AnnaClaire Marley, Phoebe Racine, Gabriel de la Rosa at the Bren School of Enviromental Science & Management began this project with the goal encouraging an increase in seaweed aquaculture in order to better take advantage of the natural nutrient removal capabilities of seaweed species which can attribute to eutrophication stabilization and pollution reduction. This project looks at various abiotic restrictions and marine activities to determine areas most suitable to carry out a more developed venture of seaweed aquaculture in the Gulf of Mexico. These restrictions and activities include sea surface temperature, salinity, water depth, presence of shipping lanes, cable areas, pipelines, military bases, oil and gas platforms, and other areas generally dangerous for the seaweed to inhabit. While carbon extraction was briefly considered, this study focuses mainly on seaweeds effect on Nitrogen and Phosphorous removal and the impacts on productivity and water quality. Currently, the study has been isolated to the Gulf of Mexico, be the group has begun expanding their research and mapping out the anthropogenic pollution over the United States. With pollution increasing at alarming rates around the world, the findings in this study laid out in the final report are very important to address.")),
-                                         br(),
+                                         h2(p("A group of researchers including Anna Claire Marley, Phoebe Racine, Gabriel de la Rosa at the Bren School of Enviromental Science & Management began this project with the goal encouraging an increase in seaweed aquaculture in order to better take advantage of the natural nutrient removal capabilities of seaweed species which can attribute to eutrophication stabilization and pollution reduction. This project looks at various abiotic restrictions and marine activities to determine areas most suitable to carry out a more developed venture of seaweed aquaculture in the Gulf of Mexico. These restrictions and activities include sea surface temperature, salinity, water depth, presence of shipping lanes, cable areas, pipelines, military bases, oil and gas platforms, and other areas generally dangerous for the seaweed to inhabit. While carbon extraction was briefly considered, this study focuses mainly on seaweeds effect on Nitrogen and Phosphorous removal and the impacts on productivity and water quality. Currently, the study has been isolated to the Gulf of Mexico, be the group has begun expanding their research and mapping out the anthropogenic pollution over the United States. With pollution increasing at alarming rates around the world, the findings in this study laid out in the final report are very important to address.")),
+                                         #br(),
                                          h1("Summary"),
                                          h2(p("Our shiny app explores this potential for seaweed aquaculture to remediate nutrient pollution on a large scale using the Gulf of Mexico as a case. The two species considered in the study and reflected in this app are Gracilaria tikvahiae and Sargassum spp. The purpose of this app is to visualize the findings of the study and allow the use of an interactive tool to help push the idea of the potential for a seaweed aquaculture market.")),
-                                         br(),
+                                         #br(),
                                          h1("Overview"),
-                                         tags$ul(
+                                         h2(tags$ul(
                                                  tags$li("The first tab introduces viewers to the two study species as well as two other important seaweed species Eucheuma spp and Ulva spp (U. prolifera). Background information on the spread of seaweed populations as well as abiotic restrictions associated with the given species are addressed within the content of this tab."),
                                                  tags$li("The second tab allows the user to select between various suitability and exclusion factors for seaweed aquaculture and observe the locations where seaweed aquaculture can physically thrive and where it is physically not allowed, depending on each factor."),
-                                                 tags$li("The third tab displays the combined suitable areas and the combined exclusion areas. When both choices are selected, the suitable and exclsuion layers are combined, revealing the potential seaweed aquaculture sites in the Gulf of Mexico.")),
+                                                 tags$li("The third tab displays the combined suitable areas and the combined exclusion areas. When both choices are selected, the suitable and exclsuion layers are combined, revealing the potential seaweed aquaculture sites in the Gulf of Mexico."))),
                                          h3("Citations"),
-                                         h4(p("list citations here")),
+                                         h4(p("admin. (2016, March 21). Caribbean scientists to meet to address prevalence of sargassum seaweed. Caribbean News. https://www.caribbeannationalweekly.com/caribbean-breaking-news-featured/caribbean-scientists-address-sargassum-seaweed/"),
+                                            p("Becker, R. A., & Wilks, A. R.. & Brownrigg, R. & Minka, T. P., & Deckmyn, A. (2018). maps: Draw Geographical Maps. R package version 3.3.0. https://CRAN.R-project.org/package=maps"),
+                                            p("Bosch, S. (2020). sdmpredictors: Species Distribution Modelling Predictor Datasets. R package version 0.2.9. https://CRAN.R-project.org/package=sdmpredictors"),
+                                            p("Eucheuma denticulatum. (2018, February 14). Wikipedia. https://en.wikipedia.org/wiki/Eucheuma_denticulatum"),
+                                            p("Gorman, L., Kraemer, G. P., Yarish, C., Boo, S. M., & Kim, J. K. (2017). The effects of temperature on the growth rate and nitrogen content of invasive Gracilaria vermiculophylla and native Gracilaria tikvahiae from Long Island Sound, USA. ALGAE, 32(1), 57–66. https://doi.org/10.4490/algae.2017.32.1.30"),
+                                            p("Hijmans, R. J. (2020). raster: Geographic Data Analysis and Modeling. R package version 3.4-5. https://CRAN.R-project.org/package=raster"),
+                                            p("Hiraoka, M., Ichihara, K., Zhu, W., Ma, J., & Shimada, S. (2011). Culture and Hybridization Experiments on an Ulva Clade Including the Qingdao Strain Blooming in the Yellow Sea. PLoS ONE, 6(5), e19371. https://doi.org/10.1371/journal.pone.0019371"),
+                                            p("Kim, J. K., Kraemer, G. P., & Yarish, C. (2014). Field scale evaluation of seaweed aquaculture as a nutrient bioextraction strategy in Long Island Sound and the Bronx River Estuary. Aquaculture, 433, 148–156. https://doi.org/10.1016/j.aquaculture.2014.05.034"),
+                                            p("Liu, D., Keesing, J. K., He, P., Wang, Z., Shi, Y., & Wang, Y. (2013). The world’s largest macroalgal bloom in the Yellow Sea, China: Formation and implications. Estuarine, Coastal and Shelf Science, 129, 2–10. https://doi.org/10.1016/j.ecss.2013.05.021"),
+                                            p("Racine, P., Marley, A. C., & de la Rosa, G. (n.d.). A case for seaweed aquaculture inclusion in U.S. nutrient pollution management."),
+                                            p("South, A. (2017). rnaturalearth: World Map Data from Natural Earth. R package version 0.1.0. https://CRAN.R-project.org/package=rnaturalearth"),
+                                            p("Wang, M., Hu, C., Barnes, B. B., Mitchum, G., Lapointe, B., & Montoya, J. P. (2019). The great Atlantic Sargassum belt. Science, 365(6448), 83–87. https://doi.org/10.1126/science.aaw7912"),
+                                            p("Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686, https://doi.org/10.21105/joss.01686"),
+                                            p("Wiedenhoft, H. (2019, November 20). Seaweed farming gains traction. Aquaculture North America. https://www.aquaculturenorthamerica.com/seaweed-farming-gains-traction/"),
+                                            p("WoRMS - World Register of Marine Species - Eucheuma J.Agardh, 1847. (n.d.). Www.marinespecies.org. Retrieved March 5, 2021, from http://www.marinespecies.org/aphia.php?p=taxdetails&id=206475#distributions"),
+                                            p("WoRMS - World Register of Marine Species - Gracilaria tikvahiae McLachlan, 1979. (n.d.). Www.marinespecies.org. Retrieved March 5, 2021, from http://www.marinespecies.org/aphia.php?p=taxdetails&id=157354"),
+                                            p("WoRMS - World Register of Marine Species - Sargassum C.Agardh, 1820. (n.d.). Www.marinespecies.org. http://www.marinespecies.org/aphia.php?p=taxdetails&id=144132#notes"),
+                                            p("WoRMS - World Register of Marine Species - Ulva prolifera O.F.Müller, 1778. (n.d.). Www.marinespecies.org. Retrieved March 5, 2021, from http://www.marinespecies.org/aphia.php?p=taxdetails&id=234476#distributions"),
+                                            p("Youssef. (2019, March 25). Gracilaria Supplier and Exporter in Morocco. Morocco Seaweed. https://www.morocco-seaweed.com/gracilaria/
+
+")),
                                          br()
-                                         )
+                                         )#add parenthesis here
                                   ))
                       ),
 
              tabPanel("Seaweed Species",
                       sidebarLayout(
-                        sidebarPanel(selectInput(inputId = "pick_species",
+                        sidebarPanel(width = 4, selectInput(inputId = "pick_species",
                                                  label = h5("Seaweed Species"),
                                                  choices = list(
                                                    "Gracilaria tikvahiae" = 1,
@@ -46,8 +67,9 @@ ui <- fluidPage(theme = "app_theme.css",
                                                    "Eucheuma spp." = 3,
                                                    "Ulva spp." = 4),
                                                  selected = 1),
-                                     ),
-                        mainPanel(uiOutput("img"),
+                                     ), #take out one parenthesis
+                        mainPanel(width = 12,
+                                  uiOutput("img"),
                                   textOutput("text")
                                   ))
                       ),
@@ -98,37 +120,19 @@ server <- function(input, output) {
 
     output$img <- renderUI({
       if(input$pick_species == 1){
-        img(height = "75%", width = "75%", src = 'gracilaria.png')
+        img(height = "100%", width = "100%", src = 'gracilaria.png')
       }
       else
         if(input$pick_species == 2){
-        img(height = "75%", width = "75%", src = 'sargassum.png')
+        img(height = "100%", width = "100%", src = 'sargassum.png')
       }
       else
         if(input$pick_species == 3){
-        img(height = "75%", width = "75%", src = 'eucheuma.png')
+        img(height = "100%", width = "100%", src = 'eucheuma.png')
       }
       else
         if(input$pick_species == 4){
-        img(height = "75%", width = "75%", src = 'ulva.png')
-      }
-      })
-
-    output$text <- renderText({
-      if(input$pick_species == 1){
-        "Part of the family Gracilariaceae, Gracilaria tikvahiae is native to the Long Island Sound and Newfoundland coasts. G. tikvahiae also less heavily populates areas in the North Pacific Ocean, the Northwest Altantic Ocean, the Gulf of Maine, and was introduced to Hawaii in [add year?]. G. tikvahiae also has a population in the Gulf of Mexico, allowing the species to be one of the two main seaweed species observed in this study. Through information collected in the study, it was found that the dry weight of Nitrogen (N) in G. tikvahiae is 3.9% while the dry weight of Phosphorous (P) is 0.04%. This species is often found in shallow sublittoral and sheltered waters at depths of two to five meters (cite) and can be rather sensitive to temperature shifts, more so than G. tikvahiae’s Korea-native relative G. vermiculophylla. The abiotic restrictions used to measure suitable areas for seaweed aquaculture using the two study species included sea temperature and salinity. For G. tikvahiae this meant that temperature range must be within 15 – 34C and the salinity must be within 8 – 60 PSU (Practical Salinity Unit)."
-      }
-      else
-        if(input$pick_species == 2){
-        "Sargassum spp is a group of seaweed species belonging to the Sargassaceae family of seaweed. This group of seaweed is known to attract an array of aquatic and semi-aquatic organisms, allowing for high biodiversity and productivity. Sargassum spp is able to provide habitats for fish, shrimp, crabs, birds, and turtles (cite). This group of seaweed resides in seamounts and knolls around the Mediterranean Sea, Republic of Mauritius, Northern European Seas, and, more relevant for this study, the Gulf of Mexico. Sargassum spp is the second seaweed species observed in this study and has dry N and P weights of 2.5% and 0.3% respectively. For the abiotic restrictions, a suitable habitat for Sargassum spp must be within 18 – 30C and salinity within 24 – 42 PSU. Sargassum spp can also be found floating in the Sargasso Sea (named after the seaweed itself) where S. fluitans and S. natans are found to be the most abundant. With the study period set between 2010 and 2012, it is important to note the first massive Sargassum spp bloom which occurred in 2011 in central Altantic reaching all the way to the Gulf of Mexico. Suitable sea temperatures and an influx of nutrient from upwelling in 2010 allowed for this bloom to come about."
-      }
-      else
-        if(input$pick_species == 3){
-        "Following the Gulf of Mexico study, the team of Bren School of Environmental Science researchers plan to explore the potential for Eucheuma spp as another seaweed bio-extractor. Eucheuma spp is part of the Solieriaceae family and is found in Brazil, Djibouti, and Venezuela. What is interesting about Eucheuma is that it is an alien species in all of these areas and acts as more of a commercial crop. For the abiotic restrictions, Eucheuma spp must grow in habitats of 25 – 30C for sea surface temperature and 28 – 34 PSU for salinity to maintain acceptable levels of suitability."
-      }
-      else
-        if(input$pick_species == 4){
-        "Ulva spp is a group of seaweed in the Ulvacae family, and although not an observed species in the Gulf of Mexico study, it is a relevant species for discussing the potential for the increase in seaweed aquaculture and is often addressed in the study. In particular the Ulva prolifera algal bloom from 2008 – 2012 in the Yellow Sea near Qingdao, the world’s largest trans-regional macroalgal bloom, was referenced on multiple occasions throughout the Gulf of Mexico paper. Ulva spp including U. prolifera is a highly widespread group of seaweed and is found in a large percentage of Earth’s marine ecosystems. Seaweed farming associated with the species has been known to help stabilize eutrophication in coastal China."
+        img(height = "100%", width = "100%", src = 'ulva.png')
       }
       })
 
