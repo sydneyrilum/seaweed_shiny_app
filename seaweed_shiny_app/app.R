@@ -104,9 +104,10 @@ ui <- fluidPage(theme = "app_theme.css",
                                                           tags$span("Combined Exclusion factors", style = "color: black;")
                                                           ),
                                                         choiceValues = c("1", "2")
-                                                        )
+                                                        ),
                           ),
-                        mainPanel(uiOutput("potential_sites")
+                        mainPanel(h2("Select both boxes to reveal the potential seaweed aquaculture sites.", style = "color: black;"),
+                                  uiOutput("potential_sites")
                                   ))
                       )
              )
