@@ -141,7 +141,7 @@ server <- function(input, output) {
 
     output$suitability <- renderPrint({
       if(input$radio1 == "1"){
-        img(height = "85%", width = "85%", src = 'depth.png')
+        img(height = "85%", width = "85%", src = 'depth_formatted.png')
       }
       else
         if(input$radio1 == "2"){
