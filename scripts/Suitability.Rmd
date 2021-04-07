@@ -115,11 +115,22 @@ depth_map <-
   labs(fill = "",
        x = "longitude",
        y = "latitude", 
-       title = "Depth Suitability")
+       title = "Depth Suitability") +
+  theme(legend.background = element_rect(fill = "#3e5c8b"),
+        legend.title = element_text(colour = "#e0bf53"),
+        legend.text = element_text(colour = "#fffff0"),
+        plot.background = element_rect(fill = "#3e5c8b"),
+        axis.text = element_text(colour = "#fffff0"), 
+        axis.title = element_text(colour = "#fffff0"),
+        plot.title = element_text(colour = "#fffff0", hjust = 0.5),
+        panel.grid.major.x = element_line(colour = "#fffff0"),
+        panel.grid.major.y = element_line(colour = "fffff0"))
 
 depth_map 
 
 #ggsave("depth.png", plot = depth_map)
+
+ggsave("depth_formatted.png", plot = depth_map)
 
 ```
 
