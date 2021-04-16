@@ -116,7 +116,7 @@ depth_map <-
        x = "longitude",
        y = "latitude", 
        title = "Depth Suitability") +
-  theme(legend.background = element_rect(fill = "#3e5c8b"),
+  theme(legend.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
         legend.title = element_text(colour = "#e0bf53"),
         legend.text = element_text(colour = "#fffff0"),
         plot.background = element_rect(fill = "#3e5c8b"),
@@ -128,9 +128,18 @@ depth_map <-
 
 depth_map 
 
+
+
 #ggsave("depth.png", plot = depth_map)
 
-ggsave("depth_formatted.png", plot = depth_map)
+#ggsave("depth_formatted.png", plot = depth_map)
+
+#Use the magick package to trim off the white edges.
+library(magick)
+depth_map_trim <- magick::image_read("depth_formatted.png") %>% magick::image_trim()
+
+
+image_write(depth_map_trim, path = "depth_map_trim.png", format = "png")
 
 ```
 
