@@ -119,7 +119,7 @@ depth_map <-
   theme(legend.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
         legend.title = element_text(colour = "#e0bf53"),
         legend.text = element_text(colour = "#fffff0"),
-        plot.background = element_rect(fill = "#3e5c8b"),
+        plot.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
         axis.text = element_text(colour = "#fffff0"), 
         axis.title = element_text(colour = "#fffff0"),
         plot.title = element_text(colour = "#fffff0", hjust = 0.5),
@@ -128,9 +128,6 @@ depth_map <-
 
 depth_map 
 
-
-
-#ggsave("depth.png", plot = depth_map)
 
 #ggsave("depth_formatted.png", plot = depth_map)
 
