@@ -145,15 +145,15 @@ server <- function(input, output) {
       }
       else
         if(input$radio1 == "2"){
-          img(height = "85%", width = "85%", src = 'salinity.png')
+          img(height = "85%", width = "85%", src = 'salinity_map_trim.png')
         }
       else
         if(input$radio1 == "3"){
-          img(height = "85%", width = "85%", src = 'current_velocity.png')
+          img(height = "85%", width = "85%", src = 'current_velocity_map_trim.png')
         }
       else
         if(input$radio1 == "4"){
-          img(height = "85%", width = "85%", src = 'np_ratio.png')
+          img(height = "85%", width = "85%", src = 'np_ratio_map_trim.png')
         }
     })
 
@@ -178,7 +178,7 @@ server <- function(input, output) {
 
       else if(length(input$checkGroup) == 1){
         if(input$checkGroup == "1"){
-        img(height = "85%", width = "85%", src = 'suitable_areas.png')
+        img(height = "85%", width = "85%", src = 'suitable_areas_map_trim.png')
         } else if(input$checkGroup == "2"){
           img(height = "85%", width = "85%", src = 'exclusion_areas.png')
         }
