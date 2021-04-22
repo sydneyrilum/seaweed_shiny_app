@@ -71,7 +71,7 @@ EEZ
 eez <- read_sf(dsn = "../data/World_EEZ_v11_20191118/",
                layer = "eez_v11")
 
-# filter to us eez and reproject
+# filter to U.S. eez and reproject
 us_eez <- eez %>% 
   filter(TERRITORY1 == "United States") %>% 
   st_transform(proj)
@@ -216,7 +216,7 @@ writeRaster(sal_min_mask, paste0(path, "sal_min_mask.tif"), overwrite = T)
 writeRaster(sal_max_mask, paste0(path, "sal_max_mask.tif"), overwrite = T)
 ```
 
-Sea surface Current Velocity 
+Sea Surface Current Velocity 
 
 ```{r}
 # get min current velocity data

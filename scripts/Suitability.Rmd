@@ -619,7 +619,7 @@ shipping_lanes_map_trim <- magick::image_read("shipping_lanes_formatted.png") %>
 ```
 
 
-# Eclusion Map
+# Exclusion Map
 
 ```{r}
 exclusion <- overlay( mpa,
