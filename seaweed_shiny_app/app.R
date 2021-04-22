@@ -39,6 +39,7 @@ ui <- fluidPage(theme = "app_theme.css",
                                             p("Hiraoka, M., Ichihara, K., Zhu, W., Ma, J., & Shimada, S. (2011). Culture and Hybridization Experiments on an Ulva Clade Including the Qingdao Strain Blooming in the Yellow Sea. PLoS ONE, 6(5), e19371. https://doi.org/10.1371/journal.pone.0019371"),
                                             p("Kim, J. K., Kraemer, G. P., & Yarish, C. (2014). Field scale evaluation of seaweed aquaculture as a nutrient bioextraction strategy in Long Island Sound and the Bronx River Estuary. Aquaculture, 433, 148–156. https://doi.org/10.1016/j.aquaculture.2014.05.034"),
                                             p("Liu, D., Keesing, J. K., He, P., Wang, Z., Shi, Y., & Wang, Y. (2013). The world’s largest macroalgal bloom in the Yellow Sea, China: Formation and implications. Estuarine, Coastal and Shelf Science, 129, 2–10. https://doi.org/10.1016/j.ecss.2013.05.021"),
+                                            p("Ooms, J. (2021). magick: Advanced Graphics and Image-Processing in R. R package version 2.7.1. https://CRAN.R-project.org/package=magick "),
                                             p("Racine, P., Marley, A. C., & de la Rosa, G. (n.d.). A case for seaweed aquaculture inclusion in U.S. nutrient pollution management."),
                                             p("South, A. (2017). rnaturalearth: World Map Data from Natural Earth. R package version 0.1.0. https://CRAN.R-project.org/package=rnaturalearth"),
                                             p("Wang, M., Hu, C., Barnes, B. B., Mitchum, G., Lapointe, B., & Montoya, J. P. (2019). The great Atlantic Sargassum belt. Science, 365(6448), 83–87. https://doi.org/10.1126/science.aaw7912"),
@@ -159,15 +160,15 @@ server <- function(input, output) {
 
     output$exclusion <- renderPrint({
       if(input$radio2 == "1"){
-        img(height = "85%", width = "85%", src = 'mpa.png')
+        img(height = "85%", width = "85%", src = 'mpa_map_trim.png')
       }
       else
         if(input$radio2 == "2"){
-          img(height = "85%", width = "85%", src = 'shipping_lanes.png')
+          img(height = "85%", width = "85%", src = 'shipping_lanes_map_trim.png')
         }
       else
         if(input$radio2 == "3"){
-          img(height = "85%", width = "85%", src = 'military.png')
+          img(height = "85%", width = "85%", src = 'military_map_trim.png')
         }
     })
 
@@ -180,13 +181,13 @@ server <- function(input, output) {
         if(input$checkGroup == "1"){
         img(height = "85%", width = "85%", src = 'suitable_areas_map_trim.png')
         } else if(input$checkGroup == "2"){
-          img(height = "85%", width = "85%", src = 'exclusion_areas.png')
+          img(height = "85%", width = "85%", src = 'exclusion_areas_map_trim.png')
         }
       }
 
       else if(length(input$checkGroup) == 2)
         {
-          img(height = "85%", width = "85%", src = 'seaweed.png')
+          img(height = "85%", width = "85%", src = 'seaweed_map_trim.png')
         }
     })
 
