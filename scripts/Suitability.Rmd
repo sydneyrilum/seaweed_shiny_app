@@ -136,7 +136,7 @@ library(magick)
 depth_map_trim <- magick::image_read("depth_formatted.png") %>% magick::image_trim()
 
 
-image_write(depth_map_trim, path = "depth_map_trim.png", format = "png")
+#image_write(depth_map_trim, path = "depth_map_trim.png", format = "png")
 
 ```
 
@@ -213,11 +213,28 @@ np_map <-
   labs(fill = "",
        x = "longitude",
        y = "latitude", 
-       title = "Nitrogen and Phosphorus Suitability")
+       title = "Nitrogen and Phosphorus Suitability") +
+  theme(legend.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        legend.title = element_text(colour = "#e0bf53"),
+        legend.text = element_text(colour = "#fffff0"),
+        plot.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        axis.text = element_text(colour = "#fffff0"), 
+        axis.title = element_text(colour = "#fffff0"),
+        plot.title = element_text(colour = "#fffff0", hjust = 0.5),
+        panel.grid.major.x = element_line(colour = "#fffff0"),
+        panel.grid.major.y = element_line(colour = "fffff0"))
 
 np_map 
 
-#ggsave("np_ratio.png", plot = np_map)
+
+#ggsave("np_ratio_formatted.png", plot = np_map)
+
+#Use the magick package to trim off the white edges.
+library(magick)
+np_ratio_map_trim <- magick::image_read("np_ratio_formatted.png") %>% magick::image_trim()
+
+
+#image_write(np_ratio_map_trim, path = "np_ratio_map_trim.png", format = "png")
 ```
 
 Salinity
@@ -256,12 +273,27 @@ salinity_map <-
   labs(fill = "",
        x = "longitude",
        y = "latitude", 
-       title = "Salinity Suitability")
+       title = "Salinity Suitability") +
+   theme(legend.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        legend.title = element_text(colour = "#e0bf53"),
+        legend.text = element_text(colour = "#fffff0"),
+        plot.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        axis.text = element_text(colour = "#fffff0"), 
+        axis.title = element_text(colour = "#fffff0"),
+        plot.title = element_text(colour = "#fffff0", hjust = 0.5),
+        panel.grid.major.x = element_line(colour = "#fffff0"),
+        panel.grid.major.y = element_line(colour = "fffff0"))
 
 salinity_map 
 
-#ggsave("salinity.png", plot = salinity_map)
+#ggsave("salinity_formatted.png", plot = salinity_map)
 
+#Use the magick package to trim off the white edges.
+library(magick)
+salinity_map_trim <- magick::image_read("salinity_formatted.png") %>% magick::image_trim()
+
+
+#image_write(salinity_map_trim, path = "salinity_map_trim.png", format = "png")
 
 ```
 
@@ -302,11 +334,27 @@ velocity_map <-
   labs(fill = "",
        x = "longitude",
        y = "latitude", 
-       title = "Current Velocity Suitability")
+       title = "Current Velocity Suitability") +
+  theme(legend.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        legend.title = element_text(colour = "#e0bf53"),
+        legend.text = element_text(colour = "#fffff0"),
+        plot.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        axis.text = element_text(colour = "#fffff0"), 
+        axis.title = element_text(colour = "#fffff0"),
+        plot.title = element_text(colour = "#fffff0", hjust = 0.5),
+        panel.grid.major.x = element_line(colour = "#fffff0"),
+        panel.grid.major.y = element_line(colour = "fffff0"))
 
 velocity_map 
 
-# ggsave("current_velocity.png", plot = velocity_map)
+#ggsave("current_velocity_formatted.png", plot = velocity_map)
+
+#Use the magick package to trim off the white edges.
+library(magick)
+current_velocity_map_trim <- magick::image_read("current_velocity_formatted.png") %>% magick::image_trim()
+
+
+#image_write(current_velocity_map_trim, path = "current_velocity_map_trim.png", format = "png")
 
 ```
 
@@ -355,11 +403,27 @@ suitable_areas_map <-
   labs(fill = "",
        x = "longitude",
        y = "latitude", 
-       title = "Suitable Seaweed Aquaculture Areas")
+       title = "Suitable Seaweed Aquaculture Areas") +
+  theme(legend.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        legend.title = element_text(colour = "#e0bf53"),
+        legend.text = element_text(colour = "#fffff0"),
+        plot.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        axis.text = element_text(colour = "#fffff0"), 
+        axis.title = element_text(colour = "#fffff0"),
+        plot.title = element_text(colour = "#fffff0", hjust = 0.5),
+        panel.grid.major.x = element_line(colour = "#fffff0"),
+        panel.grid.major.y = element_line(colour = "fffff0"))
 
 suitable_areas_map 
 
-#ggsave("suitable_areas.png", plot = suitable_areas_map)
+#ggsave("suitable_areas_formatted.png", plot = suitable_areas_map)
+
+#Use the magick package to trim off the white edges.
+library(magick)
+suitable_areas_map_trim <- magick::image_read("suitable_areas_formatted.png") %>% magick::image_trim()
+
+
+#image_write(suitable_areas_map_trim, path = "suitable_areas_map_trim.png", format = "png")
 
 ```
 
@@ -433,11 +497,27 @@ mpa_map <-
   labs(fill = "",
        x = "longitude",
        y = "latitude", 
-       title = "Marine Protected Areas Exclusion")
+       title = "Marine Protected Areas Exclusion") +
+  theme(legend.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        legend.title = element_text(colour = "#e0bf53"),
+        legend.text = element_text(colour = "#fffff0"),
+        plot.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        axis.text = element_text(colour = "#fffff0"), 
+        axis.title = element_text(colour = "#fffff0"),
+        plot.title = element_text(colour = "#fffff0", hjust = 0.5),
+        panel.grid.major.x = element_line(colour = "#fffff0"),
+        panel.grid.major.y = element_line(colour = "fffff0"))
 
 mpa_map 
 
-# ggsave("mpa.png", plot = mpa_map)
+#ggsave("mpa_formatted.png", plot = mpa_map)
+
+#Use the magick package to trim off the white edges.
+library(magick)
+mpa_map_trim <- magick::image_read("mpa_formatted.png") %>% magick::image_trim()
+
+
+#image_write(mpa_map_trim, path = "mpa_map_trim.png", format = "png")
 
 ```
 
@@ -463,11 +543,28 @@ military_map <-
   labs(fill = "",
        x = "longitude",
        y = "latitude", 
-       title = "Military Danger Zones Exclusion")
+       title = "Military Danger Zones Exclusion") +
+  theme(legend.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        legend.title = element_text(colour = "#e0bf53"),
+        legend.text = element_text(colour = "#fffff0"),
+        plot.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        axis.text = element_text(colour = "#fffff0"), 
+        axis.title = element_text(colour = "#fffff0"),
+        plot.title = element_text(colour = "#fffff0", hjust = 0.5),
+        panel.grid.major.x = element_line(colour = "#fffff0"),
+        panel.grid.major.y = element_line(colour = "fffff0"))
+  
 
 military_map
 
-#ggsave("military.png", plot = military_map)
+#ggsave("military_formatted.png", plot = military_map)
+
+#Use the magick package to trim off the white edges.
+library(magick)
+military_map_trim <- magick::image_read("military_formatted.png") %>% magick::image_trim()
+
+
+#image_write(military_map_trim, path = "military_map_trim.png", format = "png")
   
 
 
@@ -496,11 +593,27 @@ shipping_lanes_map <-
   labs(fill = "",
        x = "longitude",
        y = "latitude", 
-       title = "Shipping Lanes Exclusion")
+       title = "Shipping Lanes Exclusion") +
+  theme(legend.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        legend.title = element_text(colour = "#e0bf53"),
+        legend.text = element_text(colour = "#fffff0"),
+        plot.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        axis.text = element_text(colour = "#fffff0"), 
+        axis.title = element_text(colour = "#fffff0"),
+        plot.title = element_text(colour = "#fffff0", hjust = 0.5),
+        panel.grid.major.x = element_line(colour = "#fffff0"),
+        panel.grid.major.y = element_line(colour = "fffff0"))
 
 shipping_lanes_map
 
-#ggsave("shipping_lanes.png", plot = shipping_lanes_map)
+#ggsave("shipping_lanes_formatted.png", plot = shipping_lanes_map)
+
+#Use the magick package to trim off the white edges.
+library(magick)
+shipping_lanes_map_trim <- magick::image_read("shipping_lanes_formatted.png") %>% magick::image_trim()
+
+
+#image_write(shipping_lanes_map_trim, path = "shipping_lanes_map_trim.png", format = "png")
   
 
 ```
@@ -540,11 +653,27 @@ exclusion_areas_map <-
   labs(fill = "",
        x = "longitude",
        y = "latitude", 
-       title = "Excluded Seaweed Aquaculture Areas")
+       title = "Excluded Seaweed Aquaculture Areas") +
+  theme(legend.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        legend.title = element_text(colour = "#e0bf53"),
+        legend.text = element_text(colour = "#fffff0"),
+        plot.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        axis.text = element_text(colour = "#fffff0"), 
+        axis.title = element_text(colour = "#fffff0"),
+        plot.title = element_text(colour = "#fffff0", hjust = 0.5),
+        panel.grid.major.x = element_line(colour = "#fffff0"),
+        panel.grid.major.y = element_line(colour = "fffff0"))
 
 exclusion_areas_map 
 
-#ggsave("exclusion_areas.png", plot = exclusion_areas_map)
+#ggsave("exclusion_areas_formatted.png", plot = exclusion_areas_map)
+
+#Use the magick package to trim off the white edges.
+library(magick)
+exclusion_areas_map_trim <- magick::image_read("exclusion_areas_formatted.png") %>% magick::image_trim()
+
+
+#image_write(exclusion_areas_map_trim, path = "exclusion_areas_map_trim.png", format = "png")
 
 ```
 
@@ -601,11 +730,27 @@ seaweed_map <-
   labs(fill = "",
        x = "longitude",
        y = "latitude", 
-       title = "Potential Seaweed Aquaculture Areas")
+       title = "Potential Seaweed Aquaculture Areas") +
+  theme(legend.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        legend.title = element_text(colour = "#e0bf53"),
+        legend.text = element_text(colour = "#fffff0"),
+        plot.background = element_rect(fill = "#3e5c8b", color = "#3e5c8b"),
+        axis.text = element_text(colour = "#fffff0"), 
+        axis.title = element_text(colour = "#fffff0"),
+        plot.title = element_text(colour = "#fffff0", hjust = 0.5),
+        panel.grid.major.x = element_line(colour = "#fffff0"),
+        panel.grid.major.y = element_line(colour = "fffff0"))
 
 seaweed_map 
 
-#ggsave("seaweed.png", plot = seaweed_map)
+#ggsave("seaweed_formatted.png", plot = seaweed_map)
+
+#Use the magick package to trim off the white edges.
+library(magick)
+seaweed_map_trim <- magick::image_read("seaweed_formatted.png") %>% magick::image_trim()
+
+
+#image_write(seaweed_map_trim, path = "seaweed_map_trim.png", format = "png")
 
 ```
 
