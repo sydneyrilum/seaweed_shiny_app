@@ -21,7 +21,7 @@ ui <- fluidPage(theme = "app_theme.css",
                         mainPanel(width = 11, column(11, offset = 1,
                                          h2("Authors: Laurel Abowd, Jaleise Hall, & Sydney Rilum"),
                                          h1("Introduction"),
-                                         h2(p("This Shiny App has a two-fold purpose: 1) to explore seaweed aquaculture’s application for nutrient assimilation (i.e. bioremediation) in the Gulf of Mexico, and 2) to help visualize findings from Racine, P., Marley, A., Froehlich, H. E., Gaines, S. D., Ladner, I., MacAdam-Somer, I., & Bradley, D. (2021). A case for seaweed aquaculture inclusion in US nutrient pollution management. Marine Policy, 129, 104506. https://doi.org/10.1016/j.marpol.2021.104506. To note, this Shiny App does not include all human use or biotic data layers used in Racine et. al. (2021).")),
+                                         h2(p("This Shiny App has a two-fold purpose: 1) to explore seaweed aquaculture’s application for nutrient assimilation (i.e. bioremediation) in the Gulf of Mexico, and 2) to help visualize findings from Racine, P., Marley, A., Froehlich, H. E., Gaines, S. D., Ladner, I., MacAdam-Somer, I., & Bradley, D. (2021). A case for seaweed aquaculture inclusion in US nutrient pollution management. Marine Policy, 129, 104506. https://doi.org/10.1016/j.marpol.2021.104506. To note, this Shiny App does not include all human use or biotic data layers used in Racine et al. (2021).")),
                                          h1("Overview"),
                                          h2(tags$ul(
                                                  tags$li("The first tab introduces viewers <em>Gracilaria tikvahiae</em>, <em>Sargassum spp.</em>, <em>Eucheuma spp.</em> and <em>Ulva spp.</em> (<em>U. prolifera</em>). Background information on the spread of seaweed populations as well as abiotic restrictions associated with the given species are addressed within the content of this tab."),
@@ -31,7 +31,7 @@ ui <- fluidPage(theme = "app_theme.css",
                                          br(),
                                          )#add parenthesis here
                                   ))
-                      ),
+                      ,
 
              tabPanel("Seaweed Species",
                       sidebarLayout(
@@ -87,9 +87,10 @@ ui <- fluidPage(theme = "app_theme.css",
                         mainPanel(h2("Select both boxes to reveal the potential seaweed aquaculture sites.", style = "color: black;"),
                                   uiOutput("potential_sites")
                                   ))
-                      )
-             )
-  )
+                      ),
+             br()
+             ))
+
 
 # Create the server:
 server <- function(input, output) {
