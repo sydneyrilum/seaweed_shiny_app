@@ -25,7 +25,7 @@ ui <- fluidPage(theme = "app_theme.css",
                                          h1("Overview"),
                                          h2(tags$ul(
                                                  tags$li("The first tab introduces viewers <em>Gracilaria tikvahiae</em>, <em>Sargassum spp.</em>, <em>Eucheuma spp.</em> and <em>Ulva spp.</em> (<em>U. prolifera</em>). Background information on the spread of seaweed populations as well as abiotic restrictions associated with the given species are addressed within the content of this tab."),
-                                                 tags$li("The second tab allows the user to select between various suitability and exclusion factors for seaweed aquaculture and observe the locations where seaweed aquaculture can physically thrive and where it is physically not allowed, depending on each factor."),
+                                                 tags$li("The second tab allows the user to select between various suitability and exclusion factors to map seaweed aquaculture potential in The Gulf of Mexico."),
                                                  tags$li("The third tab displays the combined suitable areas and the combined exclusion areas. When both choices are selected, the suitable and exclsuion layers are combined, revealing the potential seaweed aquaculture sites in the Gulf of Mexico."))),
                                          ),
                                          br(),
