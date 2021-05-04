@@ -5,8 +5,8 @@ account: sydneyrilum
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 3931275
-bundleId: 4547772
+bundleId: 4557822
 url: https://sydneyrilum.shinyapps.io/seaweed_shiny_app/
-when: 1619992401.31434
+when: 1620169218.03734
 asMultiple: FALSE
 asStatic: FALSE
