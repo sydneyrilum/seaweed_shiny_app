@@ -19,36 +19,36 @@ ui <- fluidPage(theme = "app_theme.css",
                                      tags$style(".well {background-color: ivory;}")
                                      ),
                         mainPanel(width = 11, column(11, offset = 1,
-                                         h2("Authors: Laurel Abowd, Jaleise Hall, & Sydney Rilum"),
+                                         h2("App Authors: Laurel Abowd, Jaleise Hall, & Sydney Rilum"),
                                          h1("Introduction"),
                                          h2(p("This Shiny App has a two-fold purpose: 1) to explore seaweed aquaculture’s application for nutrient assimilation (i.e. bioremediation) in the Gulf of Mexico, and 2) to help visualize findings from Racine, P., Marley, A., Froehlich, H. E., Gaines, S. D., Ladner, I., MacAdam-Somer, I., & Bradley, D. (2021). A case for seaweed aquaculture inclusion in U.S. nutrient pollution management. Marine Policy, 129, 104506. https://doi.org/10.1016/j.marpol.2021.104506. To note, this Shiny App does not include all human use or biotic data layers used in Racine et al. (2021).")),
                                          h1("Overview"),
                                          h2(tags$ul(
-                                                 tags$li(div(HTML("The first tab introduces viewers <em>Gracilaria tikvahiae</em>, <em>Sargassum spp.</em>, <em>Eucheuma spp.</em> and <em>Ulva spp.</em> (<em>U. prolifera</em>). Background information on the spread of seaweed populations as well as abiotic restrictions associated with the given species are addressed within the content of this tab."))),
-                                                 tags$li("The second tab allows the user to select between various suitability and exclusion factors to map seaweed aquaculture potential in The Gulf of Mexico."),
-                                                 tags$li("The third tab displays the combined suitable areas and the combined exclusion areas. When both choices are selected, the suitable and exclsuion layers are combined, revealing the potential seaweed aquaculture sites in the Gulf of Mexico."))),
+                                                 #tags$li(div(HTML("The first tab introduces viewers <em>Gracilaria tikvahiae</em>, <em>Sargassum spp.</em>, <em>Eucheuma spp.</em> and <em>Ulva spp.</em> (<em>U. prolifera</em>). Background information on the spread of seaweed populations as well as abiotic restrictions associated with the given species are addressed within the content of this tab."))),
+                                                 tags$li("The first tab allows the user to select between various suitability and exclusion factors to map seaweed aquaculture potential in The Gulf of Mexico."),
+                                                 tags$li("The second tab displays the combined suitable areas and the combined exclusion areas. When both choices are selected, the suitable and exclsuion layers are combined, revealing the potential seaweed aquaculture sites in the Gulf of Mexico."))),
                                          ),
                                          br(),
                                          )#add parenthesis here
                                   ))
                       ,
 
-             tabPanel("Seaweed Species",
-                      sidebarLayout(
-                        sidebarPanel(width = 4, selectInput(inputId = "pick_species",
-                                                 label = h5("Seaweed Species"),
-                                                 choices = list(
-                                                   "Gracilaria tikvahiae" = 1,
-                                                   "Sargassum spp." = 2,
-                                                   "Eucheuma spp." = 3,
-                                                   "Ulva spp." = 4),
-                                                 selected = 1),
-                                     ), #take out one parenthesis
-                        mainPanel(#width = 12,
-                                  uiOutput("img"),
-                                  textOutput("text")
-                                  ))
-                      ),
+             #tabPanel("Seaweed Species",
+                      #sidebarLayout(
+                        #sidebarPanel(width = 4, selectInput(inputId = "pick_species",
+                                                 #label = h5("Seaweed Species"),
+                                                 #choices = list(
+                                                   #"Gracilaria tikvahiae" = 1,
+                                                   #"Sargassum spp." = 2,
+                                                   #"Eucheuma spp." = 3,
+                                                   #"Ulva spp." = 4),
+                                                 #selected = 1),
+                                     #), #take out one parenthesis
+                        #mainPanel(#width = 12,
+                                  #uiOutput("img"),
+                                  #textOutput("text")
+                                  #))
+                      #),
              tabPanel("Suitability & Exclusion Factors",
                       sidebarLayout(
                         sidebarPanel(radioButtons(inputId = "radio1",
